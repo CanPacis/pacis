@@ -1,0 +1,101 @@
+package ui
+
+templ checkbox(c *CheckboxComponent) {
+	<label x-data id={ c.ID() } class="flex flex-col gap-2 cursor-pointer size-fit">
+		if has(c.label) && has(c.text) {
+			<span class={"text-xs", kv(c.variance().Form == FormEnabled, "text-p-gray-900", "text-p-gray-500")}>
+				{ c.label }
+			</span>
+		}
+		<div class="flex gap-2 size-fit">
+			<span
+				role="checkbox"
+				aria-label={ c.label }
+				if c.variance().Form == FormDisabled {
+					aria-disabled="true"
+				} else {
+          tabindex="0"
+        }
+				if has(c.getAttr("base", "checked")) {
+					aria-checked="true"
+				} else {
+					aria-checked="false"
+				}
+        x-check
+				aria-labelledby={ c.ID() }
+				class={ class(c.classList, "border rounded size-5 aspect-square focus-visible:focus-ring flex items-center justify-center checkbox focusable",
+        sw(
+          c.variance().Form, 
+          []Variant{FormEnabled, FormDisabled},
+          "bg-p-gray-100 border-p-gray-900 has-[:checked]:bg-p-gray-1000 has-[:checked]:border-p-gray-1000",
+          "bg-p-background-100 border-p-gray-500 has-[:checked]:bg-p-gray-700 has-[:checked]:border-p-gray-700",
+          ),
+        ) }
+			>
+				@Icon("check").Size(16).StrokeColor(Color(Background, 100))
+				<input
+					if has(c.getAttr("base", "checked")) {
+						checked
+					}
+					if c.variance().Form == FormDisabled {
+						disabled
+					}
+          aria-hidden="true"
+					class="sr-only"
+					type="checkbox"
+          tabindex="-1"
+					{ c.getAttrs("base")... }
+				/>
+			</span>
+			if has(c.text) {
+				<span
+					class={ "text-sm", *sw(
+          c.variance().Form, 
+          []Variant{FormEnabled, FormDisabled},
+          "text-p-gray-1000",
+          "text-p-gray-500",
+          ) }
+				>
+					{ c.text }
+				</span>
+			}
+		</div>
+	</label>
+}
+
+type CheckboxComponent struct {
+	VariantComponent[*CheckboxComponent]
+	label string
+	text  string
+}
+
+func (c *CheckboxComponent) Disabled(disabled bool) *CheckboxComponent {
+	if disabled {
+		return c.Variant(FormDisabled)
+	}
+
+	return c.Variant(FormEnabled)
+}
+
+func (c *CheckboxComponent) Checked(checked bool) *CheckboxComponent {
+	if checked {
+    c.setAttr("checked", "checked")
+	}
+	return c
+}
+
+func (c *CheckboxComponent) Label(label string) *CheckboxComponent {
+	c.label = label
+	return c
+}
+
+func (c *CheckboxComponent) Text(text string) *CheckboxComponent {
+	c.text = text
+	return c
+}
+
+func Checkbox() *CheckboxComponent {
+	c := &CheckboxComponent{}
+	c.Component = NewComponent(c, checkbox)
+	return c
+}

@@ -1,0 +1,96 @@
+package ui
+
+templ toggle(c *ToggleComponent) {
+	<label x-data id={ c.ID() } class={ class(c.classList, "flex items-center cursor-pointer rounded-full size-fit") }>
+		<span
+			role="switch"
+			if c.variance().Form == FormDisabled {
+				aria-disabled="true"
+			} else {
+				tabindex="0"
+			}
+			if has(c.getAttr("base", "checked")) {
+				aria-checked="true"
+			} else {
+				aria-checked="false"
+			}
+			aria-label={ c.label }
+			aria-labelledby={ c.ID() }
+			x-check
+			class={
+				"relative", "bg-p-gray-100", "border", "border-p-gray-alpha-400", "rounded-full", "flex", "transition-all", "duration-50", "ease-out", "focus-visible:focus-ring", "focusable",
+				*sw(
+					c.variance().Size,
+					[]Variant{SizeHuge, SizeLarge, SizeMedium, SizeSmall, SizeTiny},
+					"w-12 h-7", "w-10 h-6", "w-9 h-5", "w-7 h-[14px]", "w-5 h-3",
+				),
+				kv(c.variance().Form == FormEnabled, "has-[:checked]:bg-p-blue-700"),
+			}
+		>
+			<span
+				class={
+					"absolute", "block", "top-0", "left-0", "rounded-full", "transition-all", "duration-50", "ease-out",
+					*sw(
+						c.variance().Size,
+						[]Variant{SizeHuge, SizeLarge, SizeMedium, SizeSmall, SizeTiny},
+						"size-[26px] has-[:checked]:left-[calc(100%-26px)]",
+						"size-[22px] has-[:checked]:left-[calc(100%-22px)]",
+						"size-[18px] has-[:checked]:left-[calc(100%-18px)]",
+						"size-3 has-[:checked]:left-[calc(100%-12px)]",
+						"size-[10px] has-[:checked]:left-[calc(100%-10px)]",
+					),
+					*sw(
+						c.variance().Form,
+						[]Variant{FormDisabled, FormEnabled},
+						"bg-p-gray-alpha-400", "bg-p-gray-700 has-[:checked]:bg-white",
+					),
+				}
+			>
+				<input
+					if has(c.getAttr("base", "checked")) {
+						checked
+					}
+					if c.variance().Form == FormDisabled {
+						disabled
+					}
+					aria-hidden="true"
+					tabindex="-1"
+					type="checkbox"
+					class="sr-only"
+					{ c.getAttrs("base")... }
+				/>
+			</span>
+		</span>
+	</label>
+}
+
+type ToggleComponent struct {
+	VariantComponent[*ToggleComponent]
+	label string
+}
+
+func (c *ToggleComponent) Disabled(disabled bool) *ToggleComponent {
+	if disabled {
+		return c.Variant(FormDisabled)
+	}
+
+	return c.Variant(FormEnabled)
+}
+
+func (c *ToggleComponent) Label(label string) *ToggleComponent {
+	c.label = label
+	return c
+}
+
+func (c *ToggleComponent) Checked(checked bool) *ToggleComponent {
+	if checked {
+		c.setAttr("checked", "checked")
+	}
+	return c
+}
+
+func Toggle() *ToggleComponent {
+	c := &ToggleComponent{}
+	c.Component = NewComponent(c, toggle)
+	return c
+}

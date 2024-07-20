@@ -1,0 +1,47 @@
+package ui
+
+templ divider(c *DividerComponent) {
+	if c.content != nil {
+		<span role="separator" aria-orientation="horizontal" class="flex items-center my-2">
+			<span class="flex-1 border-t border-p-gray-400"></span>
+			<span class="h-8 px-3 text-sm border rounded-full size-fit border-p-gray-400">
+				@c.content
+			</span>
+			<span class="flex-1 border-t border-p-gray-400"></span>
+		</span>
+	} else {
+		if has(c.label) {
+			<span role="separator" aria-orientation="horizontal" class="flex items-center my-2">
+				<span class="flex-1 border-t border-p-gray-400"></span>
+				<span class="flex items-center justify-center h-8 px-3 text-sm border rounded-full size-fit border-p-gray-400">
+					{ c.label }
+				</span>
+				<span class="flex-1 border-t border-p-gray-400"></span>
+			</span>
+		} else {
+			<hr class="my-2 border-t border-p-gray-400"/>
+		}
+	}
+}
+
+type DividerComponent struct {
+	Component[*DividerComponent]
+	label   string
+	content templ.Component
+}
+
+func (c *DividerComponent) Label(label string) *DividerComponent {
+	c.label = label
+	return c
+}
+
+func (c *DividerComponent) Content(content templ.Component) *DividerComponent {
+	c.content = content
+	return c
+}
+
+func Divider() *DividerComponent {
+	c := &DividerComponent{}
+	c.Component = NewComponent(c, divider)
+	return c
+}

@@ -1,0 +1,110 @@
+package ui
+
+import "fmt"
+
+func (c *TabsComponent) handle(handle TabItem) templ.Component {
+	return Button().
+		Variant(SizeSmall|ColorSubtle).
+		AddClass("py-1 px-[6px] rounded-md").
+		RemoveClass("px-4 pl-3 rounded h-8").
+		Attr("x-on:click", magic("store.tabs.set", str(c.name), str(handle.Value))).
+		Attr(":aria-selected",
+			fmt.Sprintf("%s ? 'true' : 'false'",
+				magic("store.tabs.isActive",
+					str(c.name),
+					str(handle.Value),
+				),
+			),
+		).
+		Attr("role", "tab").
+		Attr("aria-controls", fmt.Sprintf("tab-content-%s-%s", c.name, handle.Value)).
+		Attr("id", fmt.Sprintf("tab-handle-%s-%s", c.name, handle.Value)).
+		Attr(
+			":class",
+			fmt.Sprintf(
+				"%s && '!bg-p-gray-1000 !hover:bg-p-gray-1100 !text-p-background-100'",
+				magic("store.tabs.isActive", str(c.name), str(handle.Value)),
+			),
+		)
+}
+
+templ tabs(c *TabsComponent) {
+	<div
+		role="tablist"
+		if has(c.defaultSelected) {
+			x-init={ magic("store.tabs.define", str(c.name), str(c.defaultSelected)) }
+		} else {
+			x-init={ magic("store.tabs.define", str(c.name)) }
+		}
+		class={ class(c.classList, "flex", "gap-2", "size-fit") }
+		{ c.getAttrs("base")... }
+	>
+		for _, handle := range c.handles {
+			@c.handle(handle) {
+				{ handle.Label }
+			}
+		}
+	</div>
+}
+
+type TabItem struct {
+	Value string
+	Label string
+}
+
+func Tab(label, value string) TabItem {
+	return TabItem{
+		Value: value,
+		Label: label,
+	}
+}
+
+type TabsComponent struct {
+	Component[*TabsComponent]
+	name            string
+	handles         []TabItem
+	defaultSelected string
+}
+
+func (c *TabsComponent) Default(value string) *TabsComponent {
+	c.defaultSelected = value
+	return c
+}
+
+func Tabs(name string, handles []TabItem) *TabsComponent {
+	c := &TabsComponent{
+		name:    fmt.Sprintf("p-%s", name),
+		handles: handles,
+	}
+	c.Component = NewComponent(c, tabs)
+	return c
+}
+
+templ tabContent(c *TabContentComponent) {
+	<div
+		x-data
+		role="tabpanel"
+		tabindex="-1"
+		id={ fmt.Sprintf("tab-content-%s-%s", c.name, c.value) }
+		aria-labelledby={ fmt.Sprintf("tab-handle-%s-%s", c.name, c.value) }
+		x-show={ magic("store.tabs.isActive", str(c.name), str(c.value)) }
+		class="focus-visible:focus-ring focusable"
+	>
+		{ children... }
+	</div>
+}
+
+type TabContentComponent struct {
+	Component[*TabContentComponent]
+	name  string
+	value string
+}
+
+func TabContent(name, value string) *TabContentComponent {
+	c := &TabContentComponent{
+		name:  fmt.Sprintf("p-%s", name),
+		value: value,
+	}
+	c.Component = NewComponent(c, tabContent)
+	return c
+}

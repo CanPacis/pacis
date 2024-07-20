@@ -1,0 +1,106 @@
+package ui
+
+import (
+	"fmt"
+	"time"
+)
+
+css delay(delay time.Duration) {
+	--delay: { fmt.Sprintf("%dms", int64(delay / time.Millisecond)) };
+}
+
+func (c *TooltipComponent) generateAnchor() map[string]any {
+	anchor := map[string]any{}
+
+	key := fmt.Sprintf("x-anchor.%s.offset.10", tooltipPositionMap[c.position])
+	anchor[key] = "$refs.trigger"
+
+	return anchor
+}
+
+templ tooltip(c *TooltipComponent) {
+	<span
+		role="tooltip"
+		x-data={ kv(c.hover, "", "{ hover:false }") }
+		class={ "size-fit", "tooltip-wrapper", kv(c.hover, "hover") }
+	>
+		<span x-ref="trigger" class="size-fit">
+			{ children... }
+		</span>
+		<span
+			if !c.hover {
+				:class="hover && '!block'"
+			}
+			class={ class(c.classList, "px-3", "py-2", "text-sm", "rounded-lg", "tooltip", "bg-p-background-100", 
+      "border", "border-p-gray-400", "shadow-lg", "z-50", delay(c.delay)) }
+			{ c.generateAnchor()... }
+			{ c.getAttrs("base")... }
+		>
+			{ c.label }
+		</span>
+	</span>
+}
+
+type TooltipPosition int
+
+const (
+	TooltipTopCenter TooltipPosition = iota
+	TooltipTopStart
+	TooltipTopEnd
+	TooltipRightCenter
+	TooltipRightStart
+	TooltipRightEnd
+	TooltipBottomCenter
+	TooltipBottomStart
+	TooltipBottomEnd
+	TooltipLeftCenter
+	TooltipLeftStart
+	TooltipLeftEnd
+)
+
+var tooltipPositionMap = map[TooltipPosition]string{
+	TooltipTopCenter:    "top",
+	TooltipTopStart:     "top-start",
+	TooltipTopEnd:       "top-end",
+	TooltipRightCenter:  "right",
+	TooltipRightStart:   "right-start",
+	TooltipRightEnd:     "right-end",
+	TooltipBottomCenter: "bottom",
+	TooltipBottomStart:  "bottom-start",
+	TooltipBottomEnd:    "bottom-end",
+	TooltipLeftCenter:   "left",
+	TooltipLeftStart:    "left-start",
+	TooltipLeftEnd:      "left-end",
+}
+
+type TooltipComponent struct {
+	Component[*TooltipComponent]
+	label    string
+	delay    time.Duration
+	position TooltipPosition
+	hover    bool
+}
+
+func (c *TooltipComponent) Delay(delay time.Duration) *TooltipComponent {
+	c.delay = delay
+	return c
+}
+
+func (c *TooltipComponent) Position(position TooltipPosition) *TooltipComponent {
+	c.position = position
+	return c
+}
+
+func (c *TooltipComponent) NoHover() *TooltipComponent {
+	c.hover = false
+	return c
+}
+
+func Tooltip(label string) *TooltipComponent {
+	c := &TooltipComponent{
+		label: label,
+		hover: true,
+	}
+	c.Component = NewComponent(c, tooltip)
+	return c
+}

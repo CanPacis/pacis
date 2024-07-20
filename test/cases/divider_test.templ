@@ -1,0 +1,26 @@
+package test
+
+import "github.com/CanPacis/pacis/ui"
+
+templ dividerContent() {
+	<span class="flex items-center h-full gap-1">
+		<span>
+			See More
+		</span>
+		@ui.Icon("chevron-down").Size(16)
+	</span>
+}
+
+templ dividerTest() {
+	<div class="flex flex-col gap-2">
+		@ui.Divider()
+		@ui.Divider().Label("OR")
+		@ui.Divider().Content(dividerContent())
+	</div>
+}
+
+func init() {
+	page := NewTestPage(UITestPage, "Divider", "A divider is a UI element used to separate and visually distinguish different sections or content areas within a layout, often appearing as a horizontal or vertical line.", "divider")
+	page.Define("Divider", dividerTest())
+	RegisterPage(page)
+}

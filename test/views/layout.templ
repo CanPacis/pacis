@@ -1,0 +1,63 @@
+package views
+
+import (
+	"context"
+	"fmt"
+	"github.com/CanPacis/pacis/test/config"
+	"github.com/CanPacis/pacis/ui"
+)
+
+templ layout(title string) {
+	<!DOCTYPE html>
+	<html lang="en" data-theme={ ui.GetTheme(ctx).ColorScheme.String() }>
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>{ title }</title>
+			// @ui.Head(ctx)
+			for _, resource := range ui.GetProvider(ctx).Resources {
+				if resource.Type == ui.StyleResource {
+					<link rel="stylesheet preload" href={ fmt.Sprintf("/public/%s", resource.Name) } as="style"/>
+				} else if resource.Type == ui.ScriptResource {
+					<script src={ fmt.Sprintf("/public/%s", resource.Name) } if resource.Deferred {
+	defer
+}>
+					</script>
+				}
+			}
+		</head>
+		<body>
+			{ children... }
+		</body>
+	</html>
+}
+
+func isHome(ctx context.Context) bool {
+	r := config.GetRequest(ctx)
+	return r.URL.Path == "/"
+}
+
+templ header(name, desc string) {
+	<header class="fixed top-0 left-0 z-50 w-full gap-4 px-6 py-4 bg-p-background-200">
+		<div class="flex items-center justify-between">
+			<div class="flex flex-col gap-2">
+				<nav class="flex items-center gap-3">
+					if !isHome(ctx) {
+						@ui.Link(templ.SafeURL("/")).AddClass("rounded") {
+							@ui.Icon("arrow-left").Size(22)
+						}
+					}
+					<h1 class="text-2xl font-bold">
+						{ name }
+					</h1>
+				</nav>
+				<p class="truncate line-clamp-1">
+					{ desc }
+				</p>
+			</div>
+			<form method="GET" action="/web/theme">
+				@ui.IconButton("brush").Variant(ui.SizeSmall).Attr("name", "color-scheme").Type(ui.ButtonTypeSubmit).Value(getNextScheme(ctx))
+			</form>
+		</div>
+	</header>
+}

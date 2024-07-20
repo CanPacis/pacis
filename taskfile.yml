@@ -1,0 +1,22 @@
+version: '3'
+
+tasks:
+  build-tailwind:
+    cmds:
+      - npx tailwindcss -i ./public/input.css -o ./public/output.css --minify
+  dev-tailwind:
+    cmds:
+      - npx tailwindcss -i ./ui/static/input.css -o ./ui/static/output.css
+  generate-templ:
+    cmds:
+      - templ generate
+  build:
+    cmds:
+      - task build-tailwind
+      - task generate-templ
+      - go build -o ./tmp/main .
+  dev:
+    cmds:
+      - task dev-tailwind
+      - cd test && task generate-templ
+      - go build -o ./tmp/main ./test/main.go

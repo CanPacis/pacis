@@ -1,0 +1,104 @@
+package test
+
+import (
+	ui "github.com/CanPacis/pacis/ui"
+)
+
+templ avatarSizeTest() {
+	<div class="flex items-center gap-2">
+		@ui.Avatar("Matt Smith").Img("/public/11.jpg").Variant(ui.SizeHuge)
+		@ui.Avatar("Matt Smith").Img("/public/11.jpg").Variant(ui.SizeLarge)
+		@ui.Avatar("Matt Smith").Img("/public/11.jpg")
+		@ui.Avatar("Matt Smith").Img("/public/11.jpg").Variant(ui.SizeSmall)
+		@ui.Avatar("Matt Smith").Img("/public/11.jpg").Variant(ui.SizeTiny)
+	</div>
+}
+
+templ avatarWithoutImageTest() {
+	<div class="flex items-center gap-2">
+		@ui.Avatar("Jodie Whittaker").Variant(ui.SizeHuge)
+		@ui.Avatar("Peter Capaldi").Variant(ui.SizeLarge)
+		@ui.Avatar("Matt Smith")
+		@ui.Avatar("David Tennant").Variant(ui.SizeSmall)
+		@ui.Avatar("Christopher Eccleston").Variant(ui.SizeTiny)
+	</div>
+}
+
+templ avatarWithTooltipsTest() {
+	<div class="flex items-center gap-2">
+		@ui.Avatar("Jodie Whittaker").Tooltip().Variant(ui.SizeHuge)
+		@ui.Avatar("Peter Capaldi").Tooltip().Variant(ui.SizeLarge)
+		@ui.Avatar("Matt Smith").Tooltip()
+		@ui.Avatar("David Tennant").Tooltip().Variant(ui.SizeSmall)
+		@ui.Avatar("Christopher Eccleston").Tooltip().Variant(ui.SizeTiny)
+	</div>
+}
+
+templ avatarGroupTest() {
+	<div class="flex flex-wrap items-center gap-2">
+		@ui.AvatarGroup(
+			ui.Avatar("Jodie Whittaker").Img("/public/13.webp").Variant(ui.SizeHuge),
+			ui.Avatar("Peter Capaldi").Img("/public/12.avif").Variant(ui.SizeHuge),
+			ui.Avatar("Matt Smith").Img("/public/11.jpg").Variant(ui.SizeHuge),
+			ui.Avatar("David Tennant").Img("/public/10.jpg").Variant(ui.SizeHuge),
+			ui.Avatar("Christopher Eccleston").Img("/public/9.jpg").Variant(ui.SizeHuge),
+		)
+		@ui.AvatarGroup(
+			ui.Avatar("Jodie Whittaker").Img("/public/13.webp").Variant(ui.SizeLarge),
+			ui.Avatar("Peter Capaldi").Img("/public/12.avif").Variant(ui.SizeLarge),
+			ui.Avatar("Matt Smith").Img("/public/11.jpg").Variant(ui.SizeLarge),
+			ui.Avatar("David Tennant").Img("/public/10.jpg").Variant(ui.SizeLarge),
+			ui.Avatar("Christopher Eccleston").Img("/public/9.jpg").Variant(ui.SizeLarge),
+		)
+		@ui.AvatarGroup(
+			ui.Avatar("Jodie Whittaker").Img("/public/13.webp"),
+			ui.Avatar("Peter Capaldi").Img("/public/12.avif"),
+			ui.Avatar("Matt Smith").Img("/public/11.jpg"),
+			ui.Avatar("David Tennant").Img("/public/10.jpg"),
+			ui.Avatar("Christopher Eccleston").Img("/public/9.jpg"),
+		)
+		@ui.AvatarGroup(
+			ui.Avatar("Jodie Whittaker").Img("/public/13.webp").Variant(ui.SizeSmall),
+			ui.Avatar("Peter Capaldi").Img("/public/12.avif").Variant(ui.SizeSmall),
+			ui.Avatar("Matt Smith").Img("/public/11.jpg").Variant(ui.SizeSmall),
+			ui.Avatar("David Tennant").Img("/public/10.jpg").Variant(ui.SizeSmall),
+			ui.Avatar("Christopher Eccleston").Img("/public/9.jpg").Variant(ui.SizeSmall),
+		)
+		@ui.AvatarGroup(
+			ui.Avatar("Jodie Whittaker").Img("/public/13.webp").Variant(ui.SizeTiny),
+			ui.Avatar("Peter Capaldi").Img("/public/12.avif").Variant(ui.SizeTiny),
+			ui.Avatar("Matt Smith").Img("/public/11.jpg").Variant(ui.SizeTiny),
+			ui.Avatar("David Tennant").Img("/public/10.jpg").Variant(ui.SizeTiny),
+			ui.Avatar("Christopher Eccleston").Img("/public/9.jpg").Variant(ui.SizeTiny),
+		)
+	</div>
+}
+
+templ avatarGroupOverflowTest() {
+	<div class="flex flex-wrap items-center gap-2">
+		@ui.AvatarGroup(
+			ui.Avatar("Jodie Whittaker").Img("/public/13.webp"),
+			ui.Avatar("Peter Capaldi").Img("/public/12.avif"),
+			ui.Avatar("Matt Smith").Img("/public/11.jpg"),
+			ui.Avatar("David Tennant").Img("/public/10.jpg"),
+			ui.Avatar("Christopher Eccleston").Img("/public/9.jpg"),
+		).Max(3)
+		@ui.AvatarGroup(
+			ui.Avatar("Jodie Whittaker").Tooltip().Img("/public/13.webp"),
+			ui.Avatar("Peter Capaldi").Tooltip().Img("/public/12.avif"),
+			ui.Avatar("Matt Smith").Tooltip().Img("/public/11.jpg"),
+			ui.Avatar("David Tennant").Tooltip().Img("/public/10.jpg"),
+			ui.Avatar("Christopher Eccleston").Tooltip().Img("/public/9.jpg"),
+		).Max(3)
+	</div>
+}
+
+func init() {
+	page := NewTestPage(UITestPage, "Avatar", "An avatar is a graphical representation, often a circular image or icon, used to visually identify a user or profile in a user interface.", "avatar")
+	page.Define("Avatar Size", avatarSizeTest())
+	page.Define("Avatar Without Image", avatarWithoutImageTest())
+	page.Define("Avatar With Tooltips", avatarWithTooltipsTest())
+	page.Define("Avatar Group", avatarGroupTest())
+	page.Define("Avatar Group Overflow", avatarGroupOverflowTest())
+	RegisterPage(page)
+}

@@ -1,0 +1,19 @@
+package test
+
+import "github.com/CanPacis/pacis/ui"
+
+templ spinnerSizeTest() {
+	<div class="flex items-center gap-2">
+		@ui.Spinner().Variant(ui.SizeHuge)
+		@ui.Spinner().Variant(ui.SizeLarge)
+		@ui.Spinner()
+		@ui.Spinner().Variant(ui.SizeSmall)
+		@ui.Spinner().Variant(ui.SizeTiny)
+	</div>
+}
+
+func init() {
+	page := NewTestPage(UITestPage, "Spinner", "A spinner is a UI element that indicates loading or processing, often represented as a rotating icon or animation to show that a task is in progress.", "spinner")
+	page.Define("Spinner Sizes", spinnerSizeTest())
+	RegisterPage(page)
+}

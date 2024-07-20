@@ -1,0 +1,77 @@
+package test
+
+import (
+	"fmt"
+	"github.com/CanPacis/pacis/ui"
+)
+
+templ inputSizeTest() {
+	<div class="flex flex-col gap-2">
+		@ui.Input().Placeholder("Huge").Variant(ui.SizeHuge)
+		@ui.Input().Placeholder("Large").Variant(ui.SizeLarge)
+		@ui.Input().Placeholder("Medium")
+		@ui.Input().Placeholder("Small").Variant(ui.SizeSmall)
+		@ui.Input().Placeholder("Tiny").Variant(ui.SizeTiny)
+	</div>
+}
+
+templ inputWithIcons() {
+	<div class="flex flex-wrap gap-2">
+		@ui.Input().Placeholder("With Start Icon").StartIcon("search")
+		@ui.Input().Placeholder("With End Icon").EndIcon("search")
+		@ui.Input().Placeholder("With Both Icons").StartIcon("search").EndIcon("search")
+	</div>
+}
+
+templ inputWidthTest() {
+	<div class="flex gap-2">
+		@ui.Input().Placeholder("Full Width").FullWidth()
+		@ui.Input().Placeholder("Inline")
+	</div>
+}
+
+templ inputWithAffixTest() {
+	<div class="flex flex-col gap-2">
+		@ui.Input().PrefixText("https://").SuffixText(".com").Placeholder("google")
+		@ui.Input().PrefixText("https://").SuffixText(".com").Placeholder("google").FullWidth()
+		@ui.Input().PrefixText("https://").SuffixText(".com").Placeholder("google").StartIcon("world")
+		@ui.Input().PrefixText("https://").SuffixText(".com").Placeholder("google").EndIcon("world")
+		@ui.Input().PrefixText("https://").SuffixText(".com").Placeholder("google").FullWidth().StartIcon("world").Clearable()
+		@ui.Input().PrefixText("https://").SuffixText(".com").Placeholder("google").Clearable().Variant(ui.SizeTiny)
+	</div>
+}
+
+templ inputWithErrorTest() {
+	<div class="flex flex-wrap gap-4">
+		@ui.Input().Placeholder("With string error").Error("Error message")
+		@ui.Input().Placeholder("With go error").Eerror(fmt.Errorf("Error message"))
+		@ui.Input().Placeholder("With empty go error").Eerror(nil)
+		<form>
+			@ui.Input().Placeholder("Client side validation").Eerror(nil).Required(true).FormError("This field is required")
+		</form>
+	</div>
+}
+
+templ inputDisabledTest() {
+	<div class="flex gap-4">
+		@ui.Input().Disabled(true).Placeholder("Disabled")
+	</div>
+}
+
+templ inputWithAdornmentsTest() {
+	<div class="flex flex-wrap gap-4">
+		@ui.Input().Placeholder("Password").Type(ui.InputTypePassword).StartIcon("key").EndIcon("lock").Clearable().FullWidth()
+	</div>
+}
+
+func init() {
+	page := NewTestPage(UITestPage, "Input", "A text input is a UI element that allows users to enter and edit text, commonly used for collecting data such as names, passwords, or comments.", "input")
+	page.Define("Input Sizes", inputSizeTest())
+	page.Define("Input with Icons", inputWithIcons())
+	page.Define("Input Width", inputWidthTest())
+	page.Define("Input with Affix", inputWithAffixTest())
+	page.Define("Input with Error", inputWithErrorTest())
+	page.Define("Input Disabled", inputDisabledTest())
+	page.Define("Input with Adornments", inputWithAdornmentsTest())
+	RegisterPage(page)
+}

@@ -1,0 +1,119 @@
+package ui
+
+import "fmt"
+
+templ radio(c *RadioComponent) {
+	<label x-data id={ c.ID() } class="flex gap-2 cursor-pointer size-fit">
+		<span
+			role="radio"
+			aria-label={ c.text }
+			if c.variance().Form == FormDisabled {
+				aria-disabled="true"
+			} else {
+				tabindex="0"
+			}
+			if has(c.getAttr("base", "checked")) {
+				aria-checked="true"
+			} else {
+				aria-checked="false"
+			}
+      x-check
+			aria-labelledby={ c.ID() }
+			class={ class(c.classList, "flex items-center justify-center border rounded-full size-5 bg-p-gray-100", "focus-visible:focus-ring", "focusable", kv(c.variance().Form == FormDisabled, "border-p-gray-500", "border-p-gray-900")) }
+		>
+			<span class={ "size-2", "block", "scale-0", "has-[:checked]:scale-100", "outline-none", "rounded-full", "transition", "duration-75", "origin-center", kv(c.variance().Form == FormDisabled, "bg-p-gray-500", "bg-p-gray-1000") }>
+				<input
+					if has(c.getAttr("base", "checked")) {
+						checked
+					}
+					if c.variance().Form == FormDisabled {
+						disabled
+					}
+					type="radio"
+					class="sr-only"
+					aria-hidden="true"
+					tabindex="-1"
+					{ c.getAttrs("base")... }
+				/>
+			</span>
+		</span>
+		<span class={ "text-sm", kv(c.variance().Form == FormDisabled, "text-p-gray-500", "text-p-gray-1000") }>
+			{ c.text }
+		</span>
+	</label>
+}
+
+type RadioComponent struct {
+	VariantComponent[*RadioComponent]
+	text string
+}
+
+func (c *RadioComponent) Disabled(disabled bool) *RadioComponent {
+	if disabled {
+		return c.Variant(FormDisabled)
+	}
+
+	return c.Variant(FormEnabled)
+}
+
+func (c *RadioComponent) Checked(checked bool) *RadioComponent {
+	if checked {
+    c.setAttr("checked", "checked")
+	}
+	return c
+}
+
+func (c *RadioComponent) Text(text string) *RadioComponent {
+	c.text = text
+	return c
+}
+
+func Radio() *RadioComponent {
+	c := &RadioComponent{}
+	c.Component = NewComponent(c, radio)
+
+	return c
+}
+
+templ radioGroup(c *RadioGroupComponent) {
+	<fieldset aria-label={ c.label } class={ class(c.classList, "flex", "size-fit", fmt.Sprintf("gap-p-%d", c.spacing), kv(c.alignment == Vertical, "flex-col")) } { c.getAttrs("base")... }>
+		<legend class="mb-2 text-sm text-p-gray-900">
+			{ c.label }
+		</legend>
+		for _, radio := range c.items {
+			@Radio().Text(radio).Attr("name", c.name)
+		}
+	</fieldset>
+}
+
+type RadioGroupComponent struct {
+	Component[*RadioGroupComponent]
+	name      string
+	label     string
+	items     []string
+	spacing   int
+	alignment Alignment
+}
+
+func (c *RadioGroupComponent) Spacing(spacing int) *RadioGroupComponent {
+	c.spacing = spacing
+	return c
+}
+
+func (c *RadioGroupComponent) Alignment(alignment Alignment) *RadioGroupComponent {
+	c.alignment = alignment
+	return c
+}
+
+func RadioGroup(name string, label string, items ...string) *RadioGroupComponent {
+	c := &RadioGroupComponent{
+		name:      name,
+		label:     label,
+		items:     items,
+		spacing:   4,
+		alignment: Vertical,
+	}
+	c.Component = NewComponent(c, radioGroup)
+
+	return c
+}

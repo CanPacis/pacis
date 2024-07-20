@@ -1,0 +1,133 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ["./ui/**/*.{html,js,templ,go}", "./test/**/*.{html,js,templ,go}"],
+  theme: {
+    extend: {
+      colors: {
+        "p-amber": {
+          100: "var(--pacis-amber-100)",
+          200: "var(--pacis-amber-200)",
+          300: "var(--pacis-amber-300)",
+          400: "var(--pacis-amber-400)",
+          500: "var(--pacis-amber-500)",
+          600: "var(--pacis-amber-600)",
+          700: "var(--pacis-amber-700)",
+          800: "var(--pacis-amber-800)",
+          900: "var(--pacis-amber-900)",
+          1000: "var(--pacis-amber-1000)",
+        },
+
+        "p-blue": {
+          100: "var(--pacis-blue-100)",
+          200: "var(--pacis-blue-200)",
+          300: "var(--pacis-blue-300)",
+          400: "var(--pacis-blue-400)",
+          500: "var(--pacis-blue-500)",
+          600: "var(--pacis-blue-600)",
+          700: "var(--pacis-blue-700)",
+          800: "var(--pacis-blue-800)",
+          900: "var(--pacis-blue-900)",
+          1000: "var(--pacis-blue-1000)",
+        },
+
+        "p-gray": {
+          100: "var(--pacis-gray-100)",
+          200: "var(--pacis-gray-200)",
+          300: "var(--pacis-gray-300)",
+          400: "var(--pacis-gray-400)",
+          500: "var(--pacis-gray-500)",
+          600: "var(--pacis-gray-600)",
+          700: "var(--pacis-gray-700)",
+          800: "var(--pacis-gray-800)",
+          900: "var(--pacis-gray-900)",
+          1000: "var(--pacis-gray-1000)",
+          1100: "var(--pacis-gray-1100)",
+        },
+
+        "p-gray-alpha": {
+          100: "var(--pacis-gray-alpha-100)",
+          200: "var(--pacis-gray-alpha-200)",
+          300: "var(--pacis-gray-alpha-300)",
+          400: "var(--pacis-gray-alpha-400)",
+          500: "var(--pacis-gray-alpha-500)",
+          600: "var(--pacis-gray-alpha-600)",
+          700: "var(--pacis-gray-alpha-700)",
+          800: "var(--pacis-gray-alpha-800)",
+          900: "var(--pacis-gray-alpha-900)",
+          1000: "var(--pacis-gray-alpha-1000)",
+        },
+
+        "p-green": {
+          100: "var(--pacis-green-100)",
+          200: "var(--pacis-green-200)",
+          300: "var(--pacis-green-300)",
+          400: "var(--pacis-green-400)",
+          500: "var(--pacis-green-500)",
+          600: "var(--pacis-green-600)",
+          700: "var(--pacis-green-700)",
+          800: "var(--pacis-green-800)",
+          900: "var(--pacis-green-900)",
+          1000: "var(--pacis-green-1000)",
+        },
+
+        "p-pink": {
+          100: "var(--pacis-pink-100)",
+          200: "var(--pacis-pink-200)",
+          300: "var(--pacis-pink-300)",
+          400: "var(--pacis-pink-400)",
+          500: "var(--pacis-pink-500)",
+          600: "var(--pacis-pink-600)",
+          700: "var(--pacis-pink-700)",
+          800: "var(--pacis-pink-800)",
+          900: "var(--pacis-pink-900)",
+          1000: "var(--pacis-pink-1000)",
+        },
+
+        "p-purple": {
+          100: "var(--pacis-purple-100)",
+          200: "var(--pacis-purple-200)",
+          300: "var(--pacis-purple-300)",
+          400: "var(--pacis-purple-400)",
+          500: "var(--pacis-purple-500)",
+          600: "var(--pacis-purple-600)",
+          700: "var(--pacis-purple-700)",
+          800: "var(--pacis-purple-800)",
+          900: "var(--pacis-purple-900)",
+          1000: "var(--pacis-purple-1000)",
+        },
+
+        "p-red": {
+          100: "var(--pacis-red-100)",
+          200: "var(--pacis-red-200)",
+          300: "var(--pacis-red-300)",
+          400: "var(--pacis-red-400)",
+          500: "var(--pacis-red-500)",
+          600: "var(--pacis-red-600)",
+          700: "var(--pacis-red-700)",
+          800: "var(--pacis-red-800)",
+          900: "var(--pacis-red-900)",
+          1000: "var(--pacis-red-1000)",
+        },
+
+        "p-teal": {
+          100: "var(--pacis-teal-100)",
+          200: "var(--pacis-teal-200)",
+          300: "var(--pacis-teal-300)",
+          400: "var(--pacis-teal-400)",
+          500: "var(--pacis-teal-500)",
+          600: "var(--pacis-teal-600)",
+          700: "var(--pacis-teal-700)",
+          800: "var(--pacis-teal-800)",
+          900: "var(--pacis-teal-900)",
+          1000: "var(--pacis-teal-1000)",
+        },
+
+        "p-background": {
+          100: "var(--pacis-background-100)",
+          200: "var(--pacis-background-200)",
+        },
+      },
+    },
+  },
+  plugins: [],
+};

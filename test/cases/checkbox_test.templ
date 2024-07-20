@@ -1,0 +1,33 @@
+package test
+
+import "github.com/CanPacis/pacis/ui"
+
+templ checkboxTest() {
+	<div class="flex items-center gap-4">
+		@ui.Checkbox()
+		@ui.Checkbox().Text("Text")
+	</div>
+}
+
+templ checkboxWithLabelTest() {
+	<div class="flex items-center gap-4">
+		@ui.Checkbox().Text("Text").Label("Label")
+		@ui.Checkbox().Text("Text").Label("Label").Checked(true)
+	</div>
+}
+
+templ checkboxDisabledTest() {
+	<div class="flex items-center gap-4">
+		@ui.Checkbox().Text("Text").Label("Label").Disabled(true)
+		@ui.Checkbox().Text("Text").Label("Label").Disabled(true).Checked(true)
+	</div>
+}
+
+
+func init() {
+	page := NewTestPage(UITestPage, "Checkbox", "A checkbox is a UI element that allows users to select or deselect an option, indicating a binary choice, typically represented as a small square that can contain a checkmark.", "checkbox")
+	page.Define("Checkbox", checkboxTest())
+	page.Define("Checkbox with Label", checkboxWithLabelTest())
+	page.Define("Checkbox Disabled", checkboxDisabledTest())
+	RegisterPage(page)
+}

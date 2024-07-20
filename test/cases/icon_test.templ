@@ -1,0 +1,69 @@
+package test
+
+import "github.com/CanPacis/pacis/ui"
+
+templ iconSizeTest() {
+	<div class="flex items-center gap-2">
+		@ui.Icon("search").Size(32)
+		@ui.Icon("search").Size(24)
+		@ui.Icon("search").Size(20)
+		@ui.Icon("search").Size(16)
+		@ui.Icon("search").Size(12)
+		@ui.Icon("basket").Filled().Size(32)
+		@ui.Icon("basket").Filled().Size(24)
+		@ui.Icon("basket").Filled().Size(20)
+		@ui.Icon("basket").Filled().Size(16)
+		@ui.Icon("basket").Filled().Size(12)
+	</div>
+}
+
+templ iconColorTest() {
+	<div class="flex items-center gap-2">
+		@ui.Icon("user").Size(30).StrokeColor(ui.Color(ui.Amber))
+		@ui.Icon("user").Size(30).StrokeColor(ui.Color(ui.Blue))
+		@ui.Icon("user").Size(30).StrokeColor(ui.Color(ui.Gray))
+		@ui.Icon("user").Size(30).StrokeColor(ui.Color(ui.Green))
+		@ui.Icon("user").Size(30).StrokeColor(ui.Color(ui.Pink))
+		@ui.Icon("user").Size(30).StrokeColor(ui.Color(ui.Purple))
+		@ui.Icon("user").Size(30).StrokeColor(ui.Color(ui.Red))
+		@ui.Icon("user").Size(30).StrokeColor(ui.Color(ui.Teal))
+		@ui.Icon("app-window").Size(30).FillColor(ui.Color(ui.Amber)).Filled()
+		@ui.Icon("app-window").Size(30).FillColor(ui.Color(ui.Blue)).Filled()
+		@ui.Icon("app-window").Size(30).FillColor(ui.Color(ui.Gray)).Filled()
+		@ui.Icon("app-window").Size(30).FillColor(ui.Color(ui.Green)).Filled()
+		@ui.Icon("app-window").Size(30).FillColor(ui.Color(ui.Pink)).Filled()
+		@ui.Icon("app-window").Size(30).FillColor(ui.Color(ui.Purple)).Filled()
+		@ui.Icon("app-window").Size(30).FillColor(ui.Color(ui.Red)).Filled()
+		@ui.Icon("app-window").Size(30).FillColor(ui.Color(ui.Teal)).Filled()
+	</div>
+}
+
+templ iconVariantTest() {
+	<div class="flex items-center gap-2">
+		@ui.Icon("alert-circle").Size(30)
+		@ui.Icon("alert-circle").Size(30).Filled()
+		@ui.Icon("app-window").Size(30)
+		@ui.Icon("app-window").Size(30).Filled()
+		@ui.Icon("basket").Size(30)
+		@ui.Icon("basket").Size(30).Filled()
+		@ui.Icon("bandage").Size(30)
+		@ui.Icon("bandage").Size(30).Filled()
+	</div>
+}
+
+templ iconWidthTest() {
+	<div class="flex items-center gap-2">
+		@ui.Icon("file-symlink").Size(42).StrokeWidth(1)
+		@ui.Icon("file-symlink").Size(42).StrokeWidth(2)
+		@ui.Icon("file-symlink").Size(42).StrokeWidth(2.5)
+	</div>
+}
+
+func init() {
+	page := NewTestPage(UITestPage, "Icon", "An icon is a small graphical symbol used to represent an action, object, or concept in a user interface, providing a visual cue or shortcut for users.", "icon")
+	page.Define("Icon Size", iconSizeTest())
+	page.Define("Icon Color", iconColorTest())
+	page.Define("Icon Variant", iconVariantTest())
+	page.Define("Icon Width", iconWidthTest())
+	RegisterPage(page)
+}

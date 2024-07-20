@@ -1,0 +1,176 @@
+package test
+
+import "github.com/CanPacis/pacis/ui"
+
+templ buttonSizeTest() {
+	<div class="flex flex-wrap items-center gap-2">
+		@ui.Button().Variant(ui.SizeHuge | ui.ColorPrimary) {
+			Huge
+		}
+		@ui.Button().Variant(ui.SizeLarge | ui.ColorPrimary) {
+			Large
+		}
+		@ui.Button().Variant(ui.SizeMedium | ui.ColorPrimary) {
+			Medium
+		}
+		@ui.Button().Variant(ui.SizeSmall | ui.ColorPrimary) {
+			Small
+		}
+		@ui.Button().Variant(ui.SizeTiny | ui.ColorPrimary) {
+			Tiny
+		}
+	</div>
+}
+
+templ buttonColorTest() {
+	<div class="flex flex-wrap items-center gap-2">
+		@ui.Button().Variant(ui.ColorPrimary) {
+			Primary
+		}
+		@ui.Button().Variant(ui.ColorSecondary) {
+			Secondary
+		}
+		@ui.Button().Variant(ui.ColorSubtle) {
+			Subtle
+		}
+	</div>
+}
+
+templ buttonWidthTest() {
+	<div class="flex flex-wrap items-center gap-2">
+		@ui.Button().FullWidth() {
+			Full Width
+		}
+		@ui.Button() {
+			Inline
+		}
+		@ui.Button().StartIcon("home").EndIcon("home-2").FullWidth() {
+			Full Width With Icon
+		}
+	</div>
+}
+
+templ buttonLoadingTest() {
+	<div class="flex flex-wrap items-center gap-2">
+		@ui.Button().Loading(true) {
+			Loading
+		}
+		@ui.Button().Loading(false).Attr("x-on:click", "loading = true; setTimeout(() => loading = false, 2000)") {
+			Client Side Loading
+		}
+		@ui.Button().Variant(ui.ColorSecondary).Loading(true) {
+			Loading
+		}
+		@ui.Button().Loading(false).Variant(ui.ColorSecondary).Attr("x-on:click", "loading = true; setTimeout(() => loading = false, 2000)") {
+			Client Side Loading
+		}
+	</div>
+}
+
+templ buttonIconTest() {
+	<div class="flex flex-wrap items-center gap-2">
+		@ui.Button().StartIcon("search") {
+			Start Icon
+		}
+		@ui.Button().EndIcon("plus") {
+			End Icon
+		}
+		@ui.Button().StartIcon("bell").EndIcon("external-link") {
+			Both Sides
+		}
+		@ui.Button().Variant(ui.ColorSecondary).StartIcon("search") {
+			Start Icon
+		}
+		@ui.Button().Variant(ui.ColorSecondary).EndIcon("plus") {
+			End Icon
+		}
+		@ui.Button().Variant(ui.ColorSecondary).StartIcon("bell").EndIcon("external-link") {
+			Both Sides
+		}
+		@ui.Button().Variant(ui.SizeHuge).StartIcon("search") {
+			Huge
+		}
+		@ui.Button().Variant(ui.SizeHuge).EndIcon("search") {
+			Huge
+		}
+		@ui.Button().Variant(ui.SizeLarge).StartIcon("search") {
+			Large
+		}
+		@ui.Button().Variant(ui.SizeLarge).EndIcon("search") {
+			Large
+		}
+		@ui.Button().Variant(ui.SizeSmall).StartIcon("search") {
+			Small
+		}
+		@ui.Button().Variant(ui.SizeSmall).EndIcon("search") {
+			Small
+		}
+		@ui.Button().Variant(ui.SizeTiny).StartIcon("search") {
+			Tiny
+		}
+		@ui.Button().Variant(ui.SizeTiny).EndIcon("search") {
+			Tiny
+		}
+	</div>
+}
+
+templ buttonRadiusTest() {
+	<div class="flex flex-wrap items-center gap-2">
+		@ui.Button().Radius(ui.RoundedSmall) {
+			Rounded Small
+		}
+		@ui.Button().Radius(ui.Rounded) {
+			Rounded
+		}
+		@ui.Button().Radius(ui.RoundedMedium) {
+			Rounded Medium
+		}
+		@ui.Button().Radius(ui.RoundedLarge) {
+			Rounded Large
+		}
+		@ui.Button().Radius(ui.RoundedXLarge) {
+			Rounded X-Large
+		}
+		@ui.Button().Radius(ui.RoundedFull) {
+			Rounded Full
+		}
+	</div>
+}
+
+templ buttonDisabledTest() {
+	<div class="flex flex-wrap items-center gap-2">
+		@ui.Button().Disabled(true) {
+			Disabled
+		}
+	</div>
+}
+
+templ iconButtonTest() {
+	<div class="flex flex-wrap items-center gap-2">
+		@ui.IconButton("search").Variant(ui.SizeHuge)
+		@ui.IconButton("search").Variant(ui.SizeLarge)
+		@ui.IconButton("search")
+		@ui.IconButton("search").Variant(ui.SizeSmall)
+		@ui.IconButton("search").Variant(ui.SizeTiny)
+		@ui.IconButton("user").Variant(ui.ColorSecondary)
+		@ui.IconButton("arrow-right").Radius(ui.RoundedFull)
+		@ui.IconButton("arrow-left").Radius(ui.RoundedFull).Variant(ui.ColorSubtle)
+		@ui.IconButton("box-align-top").Disabled(true)
+		@ui.IconButton("box-align-left").Variant(ui.ColorSecondary).Disabled(true)
+		@ui.IconButton("box-align-right").Loading(true)
+		@ui.IconButton("box-align-bottom").Variant(ui.ColorSecondary).Loading(true)
+	</div>
+}
+
+func init() {
+	page := NewTestPage(UITestPage, "Button", "A button is a clickable element in a user interface that allows users to perform specific actions or commands.", "button")
+	page.Define("Button Sizes", buttonSizeTest())
+	page.Define("Button Colors", buttonColorTest())
+	page.Define("Button Width", buttonWidthTest())
+	page.Define("Button Loading", buttonLoadingTest())
+	page.Define("Button Icons", buttonIconTest())
+	page.Define("Button Radius", buttonRadiusTest())
+	page.Define("Button Disabled", buttonDisabledTest())
+	page.Define("Icon Button", iconButtonTest())
+	RegisterPage(page)
+}

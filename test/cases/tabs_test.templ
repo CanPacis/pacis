@@ -1,0 +1,56 @@
+package test
+
+import "github.com/CanPacis/pacis/ui"
+
+templ tabsTest() {
+	@ui.Tabs("basic", []ui.TabItem{
+		ui.Tab("Tab 1", "tab1"),
+		ui.Tab("Tab 2", "tab2"),
+		ui.Tab("Tab 3", "tab3"),
+	})
+	@ui.TabContent("basic", "tab1") {
+		<div class="py-4">
+			Tab content for Tab 1
+		</div>
+	}
+	@ui.TabContent("basic", "tab2") {
+		<div class="py-4">
+			Tab content for Tab 2
+		</div>
+	}
+	@ui.TabContent("basic", "tab3") {
+		<div class="py-4">
+			Tab content for Tab 3
+		</div>
+	}
+}
+
+templ tabsDefaultTest() {
+	@ui.Tabs("default", []ui.TabItem{
+		ui.Tab("Tab 1", "tab1"),
+		ui.Tab("Tab 2", "tab2"),
+		ui.Tab("Tab 3", "tab3"),
+	}).Default("tab2")
+	@ui.TabContent("default", "tab1") {
+		<div class="py-4">
+			Tab content for Tab 1
+		</div>
+	}
+	@ui.TabContent("default", "tab2") {
+		<div class="py-4">
+			Tab content for Tab 2
+		</div>
+	}
+	@ui.TabContent("default", "tab3") {
+		<div class="py-4">
+			Tab content for Tab 3
+		</div>
+	}
+}
+
+func init() {
+	page := NewTestPage(UITestPage, "Tabs", "Tabs are UI elements that allow users to switch between different sections or views within the same space to organize content into distinct categories.", "tabs")
+	page.Define("Tabs", tabsTest())
+	page.Define("Tabs with Default Value", tabsDefaultTest())
+	RegisterPage(page)
+}

@@ -1,0 +1,174 @@
+package ui
+
+func (c *ButtonComponent) getIconSize() int {
+	return *sw(
+		c.variance().Size,
+		[]Variant{SizeTiny, SizeSmall, SizeMedium, SizeLarge, SizeHuge},
+		12, 14, 16, 22, 26,
+	)
+}
+
+templ button(c *ButtonComponent) {
+	<button
+		if c.variance().Loading != UndefinedVariant {
+			x-data={ *sw(
+			c.variance().Loading, 
+			[]Variant{ElementLoading, ElementLoaded}, 
+			"{ loading: true }", "{ loading: false }",
+			) }
+		}
+		class={ class(c.classList ,"flex", "items-center", "relative", "justify-center", "transition",
+		"duration-100", "focus-visible:focus-ring", "whitespace-nowrap", "focusable",
+      sw(
+        c.variance().Size, 
+        []Variant{SizeHuge, SizeLarge, SizeMedium, SizeSmall, SizeTiny},
+        "text-lg h-16 px-8 min-w-16 gap-4",
+        "text-base h-12 px-7 min-w-16 gap-3",
+        "text-sm h-10 px-5 min-w-16 gap-[10px]",
+        "text-sm h-8 px-4 gap-[10px]",
+        "text-xs h-6 px-2 gap-1",
+      ),
+      kv(c.fullWidth, "w-full flex-1"),
+      kv(c.variance().Form == FormDisabled, 
+        "bg-p-gray-100 text-gray-500 hover:bg-p-gray-100 cursor-not-allowed",
+        "active:translate-y-[1px]",
+        *sw(
+          c.variance().Color,
+          []Variant{ColorPrimary, ColorSecondary, ColorSubtle},
+          "bg-p-gray-1000 hover:bg-p-gray-1100 text-p-background-100",
+          "bg-p-gray-200 hover:bg-p-gray-300 text-p-gray-alpha-1000 border border-p-gray-400",
+          "bg-transparent hover:bg-p-gray-alpha-200 text-p-gray-alpha-1000",
+        ),
+      ),
+      kv(has(c.startIcon), 
+        *sw(
+          c.variance().Size, 
+          []Variant{SizeTiny, SizeSmall, SizeMedium, SizeLarge, SizeHuge}, 
+          "pl-2", "pl-3", "pl-3", "pl-5", "pl-6",
+        ),
+      ),
+      kv(has(c.endIcon),
+        *sw(
+          c.variance().Size, 
+          []Variant{SizeTiny, SizeSmall, SizeMedium, SizeLarge, SizeHuge}, 
+          "pr-2", "pr-3", "pr-3", "pr-5", "pr-6",
+        ),
+      ),
+			kv(c.variance().Loading == ElementLoading, "pointer-events-none"),
+      string(c.radius),
+    ) }
+		if c.variance().Form == FormDisabled {
+			disabled="disabled"
+			aria-disabled="true"
+		} else {
+			if c.variance().Loading != UndefinedVariant {
+				:disabled="loading"
+			}
+		}
+		if c.variance().Loading != UndefinedVariant {
+			:class="loading && 'pointer-events-none'"
+		}
+		{ c.getAttrs("base")... }
+		role="button"
+	>
+		if has(c.startIcon) {
+			@Icon(c.startIcon).Size(c.getIconSize())
+		}
+		{ children... }
+		if has(c.endIcon) {
+			@Icon(c.endIcon).Size(c.getIconSize())
+		}
+		if c.variance().Loading != UndefinedVariant {
+			<span
+				x-show="loading"
+				class={
+					"absolute", "flex", "items-center", "justify-center", "size-full", "rounded-inherit",
+					*sw(
+						c.variance().Color,
+						[]Variant{ColorPrimary, ColorSecondary},
+						"bg-p-gray-1000",
+						"bg-p-gray-200",
+					),
+				}
+			>
+				@Spinner().Variant(SizeSmall)
+			</span>
+		}
+	</button>
+}
+
+type ButtonType string
+
+const (
+	ButtonTypeButton ButtonType = "button"
+	ButtonTypeSubmit ButtonType = "submit"
+	ButtonTypeReset  ButtonType = "reset"
+)
+
+type ButtonComponent struct {
+	VariantComponent[*ButtonComponent]
+	variant   Variant
+	fullWidth bool
+	startIcon string
+	endIcon   string
+	radius    Radius
+}
+
+func (c *ButtonComponent) Type(typ ButtonType) *ButtonComponent {
+	c.setAttr("type", typ)
+	return c
+}
+
+func (c *ButtonComponent) Value(value string) *ButtonComponent {
+	c.setAttr("value", value)
+	return c
+}
+
+func (c *ButtonComponent) Disabled(disabled bool) *ButtonComponent {
+	if disabled {
+		return c.Variant(FormDisabled)
+	} else {
+		return c.Variant(FormEnabled)
+	}
+}
+
+func (c *ButtonComponent) StartIcon(icon string) *ButtonComponent {
+	c.startIcon = icon
+	return c
+}
+
+func (c *ButtonComponent) EndIcon(icon string) *ButtonComponent {
+	c.endIcon = icon
+	return c
+}
+
+func (c *ButtonComponent) Radius(r Radius) *ButtonComponent {
+	c.radius = r
+	return c
+}
+
+func (c *ButtonComponent) FullWidth() *ButtonComponent {
+	c.fullWidth = true
+	return c
+}
+
+func (c *ButtonComponent) Loading(loading bool) *ButtonComponent {
+	if loading {
+		return c.Variant(ElementLoading)
+	} else {
+		return c.Variant(ElementLoaded)
+	}
+}
+
+func Button() *ButtonComponent {
+	c := &ButtonComponent{
+		radius: Rounded,
+	}
+	c.Component = NewComponent(c, button)
+	c.setAttr("type", ButtonTypeButton)
+	return c
+}
+
+func IconButton(icon string) *ButtonComponent {
+	return Button().StartIcon(icon).EndIcon("").AddClass("aspect-square active:scale-[0.96]").RemoveClass("pl-6 pl-5 pl-3 pl-2 pr-6 pr-5 pr-3 pr-2 min-w-16 px-8 px-7 px-5 px-4 px-2 active:translate-y-[1px]")
+}

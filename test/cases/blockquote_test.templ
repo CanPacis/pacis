@@ -1,0 +1,29 @@
+package test
+
+import "github.com/CanPacis/pacis/ui"
+
+templ blockquoteSizeTest() {
+	<div class="flex flex-col gap-2">
+		@ui.Blockquote().Cite("- The Doctor").Variant(ui.SizeHuge) {
+			There’s no point in being grown up if you can’t be childish sometimes.
+		}
+		@ui.Blockquote().Cite("- The Doctor").Variant(ui.SizeLarge) {
+			There’s no point in being grown up if you can’t be childish sometimes.
+		}
+		@ui.Blockquote().Cite("- The Doctor") {
+			There’s no point in being grown up if you can’t be childish sometimes.
+		}
+		@ui.Blockquote().Cite("- The Doctor").Variant(ui.SizeSmall) {
+			There’s no point in being grown up if you can’t be childish sometimes.
+		}
+		@ui.Blockquote().Cite("- The Doctor").Variant(ui.SizeTiny) {
+			There’s no point in being grown up if you can’t be childish sometimes.
+		}
+	</div>
+}
+
+func init() {
+	page := NewTestPage(UITestPage, "Blockquote", "A blockquote is a UI element used to display a section of text that is quoted from another source.", "blockquote")
+	page.Define("Blockquote Sizes", blockquoteSizeTest())
+	RegisterPage(page)
+}

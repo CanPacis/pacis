@@ -1,0 +1,43 @@
+package ui
+
+templ blockquote(c *BlockquoteComponent) {
+	<blockquote
+		class={ class(
+    c.classList, 
+    "flex flex-col size-fit bg-p-background-100 border border-p-gray-500 rounded",
+    sw(
+      c.variance().Size,
+      []Variant{SizeHuge, SizeLarge, SizeMedium, SizeSmall, SizeTiny},
+      "text-lg gap-4 p-4",
+      "text-base gap-4 p-3",
+      "text-sm gap-2 p-3",
+      "text-xs gap-2 p-2",
+      "text-[10px] gap-1 p-2",
+    ),
+    ) }
+	>
+		{ children... }
+		if has(c.cite) {
+			<cite>
+				{ c.cite }
+			</cite>
+		}
+	</blockquote>
+}
+
+type BlockquoteComponent struct {
+	VariantComponent[*BlockquoteComponent]
+	cite string
+}
+
+func (c *BlockquoteComponent) Cite(cite string) *BlockquoteComponent {
+	c.cite = cite
+	return c
+}
+
+func Blockquote() *BlockquoteComponent {
+	c := &BlockquoteComponent{}
+	c.Component = NewComponent(c, blockquote)
+
+	return c
+}

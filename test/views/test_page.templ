@@ -1,0 +1,34 @@
+package views
+
+import (
+	"context"
+	test "github.com/CanPacis/pacis/test/cases"
+	"github.com/CanPacis/pacis/ui"
+)
+
+func getNextScheme(ctx context.Context) string {
+	scheme := ui.GetTheme(ctx).ColorScheme
+
+	if scheme == ui.Dark {
+		return ui.Light.String()
+	}
+
+	return ui.Dark.String()
+}
+
+templ TestPage(page *test.TestPage) {
+	@layout("Test Page") {
+		@header(page.Name, page.Description)
+		<main class="p-4 max-w-[min(720px,_94%)] mx-auto pt-28">
+			for _, component := range page.Components {
+				<div class="mb-10">
+					<h2 class="text-lg font-thin">
+						{ component.Name }
+					</h2>
+					@ui.Divider()
+					@component.Component
+				</div>
+			}
+		</main>
+	}
+}

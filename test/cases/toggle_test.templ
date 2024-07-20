@@ -1,0 +1,40 @@
+package test
+
+import "github.com/CanPacis/pacis/ui"
+
+templ toggleSizeTest() {
+	<div class="flex items-center gap-2">
+		@ui.Toggle().Label("toggle").Variant(ui.SizeHuge)
+		@ui.Toggle().Label("toggle").Variant(ui.SizeLarge)
+		@ui.Toggle().Label("toggle")
+		@ui.Toggle().Label("toggle").Variant(ui.SizeSmall)
+		@ui.Toggle().Label("toggle").Variant(ui.SizeTiny)
+	</div>
+}
+
+templ toggleValueTest() {
+	<div class="flex items-center gap-2">
+		@ui.Toggle().Label("toggle").Checked(true)
+		@ui.Toggle().Label("toggle").Checked(false)
+		@ui.Toggle().Label("toggle").Disabled(true).Checked(true)
+		@ui.Toggle().Label("toggle").Disabled(true).Checked(false)
+	</div>
+}
+
+templ toggleDisabledTest() {
+	<div class="flex items-center gap-2">
+		@ui.Toggle().Label("toggle").Disabled(true).Variant(ui.SizeHuge)
+		@ui.Toggle().Label("toggle").Disabled(true).Variant(ui.SizeLarge)
+		@ui.Toggle().Label("toggle").Disabled(true)
+		@ui.Toggle().Label("toggle").Disabled(true).Variant(ui.SizeSmall)
+		@ui.Toggle().Label("toggle").Disabled(true).Variant(ui.SizeTiny)
+	</div>
+}
+
+func init() {
+	page := NewTestPage(UITestPage, "Toggle", "A toggle is a UI element that allows users to switch between two states, such as on and off, often represented as a switch or checkbox.", "toggle")
+	page.Define("Toggle Sizes", toggleSizeTest())
+	page.Define("Toggle Value", toggleValueTest())
+	page.Define("Toggle Disabled", toggleDisabledTest())
+	RegisterPage(page)
+}

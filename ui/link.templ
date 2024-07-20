@@ -1,0 +1,50 @@
+package ui
+
+import "net/url"
+
+func (c *LinkComponent) noReferrer() bool {
+	u, _ := url.Parse(string(c.getAttr("base", "href").(templ.SafeURL)))
+	return has(u.Hostname())
+}
+
+templ link(c *LinkComponent) {
+	<a
+		class={ class(c.classList, "text-p-blue-600 focus-visible:focus-ring") }
+		href={ c.getAttr("base", "href").(templ.SafeURL) }
+		target={ string(c.target) }
+		if c.noReferrer() {
+			rel="noreferrer"
+		}
+		{ c.getAttrs("base")... }
+	>
+		{ children... }
+	</a>
+}
+
+type LinkTarget string
+
+const (
+	LinkTargetBlank  LinkTarget = "_blank"
+	LinkTargetSelf   LinkTarget = "_self"
+	LinkTargetParent LinkTarget = "_parent"
+	LinkTargetTop    LinkTarget = "_top"
+)
+
+type LinkComponent struct {
+	Component[*LinkComponent]
+	target LinkTarget
+}
+
+func (c *LinkComponent) Target(target LinkTarget) *LinkComponent {
+	c.target = target
+	return c
+}
+
+func Link(href templ.SafeURL) *LinkComponent {
+	c := &LinkComponent{
+		target: LinkTargetSelf,
+	}
+	c.Component = NewComponent(c, link)
+	c.setAttr("href", href)
+	return c
+}

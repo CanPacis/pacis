@@ -1,0 +1,288 @@
+package ui
+
+import "strings"
+
+func (c *InputComponent) getIconSize() int {
+	switch c.variance().Size {
+	case SizeHuge:
+		return 20
+	case SizeLarge, SizeMedium, SizeSmall:
+		return 16
+	case SizeTiny:
+		return 14
+	default:
+		return 16
+	}
+}
+
+templ input(c *InputComponent) {
+	<label
+		id={ c.ID() }
+		if c.getAttr("input", "type").(InputType) == InputTypePassword {
+			x-data="{ type: 'password', value: '' }"
+		} else {
+			if c.clearable {
+				x-data="{ value: '' }"
+			} else {
+				x-data
+			}
+		}
+		class={ "input rounded-lg h-fit", kv(c.fullWidth, "w-full", "w-fit") }
+		{ c.getAttrs("label")... }
+	>
+		<div class="flex flex-col flex-auto gap-2">
+			if has(c.label) && !c.invisibleLabel {
+				<span class="text-xs text-p-gray-900">
+					{ c.label }
+				</span>
+			}
+			<div
+				class={ "flex", "flex-auto", "flex-nowrap",
+				kv(c.variance().Form == FormDisabled, "cursor-not-allowed"),
+				*sw(
+					c.variance().Size,
+					[]Variant{SizeHuge, SizeLarge, SizeMedium, SizeSmall, SizeTiny},
+					"text-lg h-16",
+					"text-base h-12",
+					"text-sm h-10",
+					"text-sm h-8",
+					"text-sm h-6",
+				) }
+			>
+				<div class="flex flex-1 rounded-lg">
+					if c.prefix != nil {
+						<span
+							class={
+								"flex items-center h-full px-3 border text-p-gray-900 border-p-gray-400",
+								kv(c.variance().Size == SizeTiny, "rounded-l-md", "rounded-l-lg"),
+							}
+						>
+							@c.prefix
+						</span>
+					}
+					<div
+						class={
+							"h-full flex-1 flex justify-between items-center gap-2 px-3 bg-p-background-100 rounded-lg focusable border-p-gray-400 z-10 has-[:user-invalid]:error-ring",
+							kv(has(c.error), "error-ring", "focus-within:focus-ring"),
+							*sw(
+								true,
+								[]any{
+									c.prefix == nil && c.suffix == nil,
+									c.prefix != nil && c.suffix == nil,
+									c.prefix == nil && c.suffix != nil,
+									c.prefix != nil && c.suffix != nil,
+								},
+								kv(c.variance().Size == SizeTiny, "rounded-md border", "rounded-lg border"),
+								kv(c.variance().Size == SizeTiny, "rounded-r-none border-t border-b border-r", "rounded-r-lg border-t border-b border-r"),
+								kv(c.variance().Size == SizeTiny, "rounded-l-none border-t border-b border-l", "rounded-l-lg border-t border-b border-l"),
+								"rounded-none border-t border-b",
+							),
+						}
+					>
+						if len(strings.TrimSpace(c.startIcon)) > 0 {
+							@Icon(c.startIcon).Size(c.getIconSize()).StrokeColor(Color(Gray, 700))
+						}
+						<input
+							if c.clearable {
+								x-model:value="value"
+							}
+							class={ "flex-1 h-full border-none outline-none bg-p-background-100 border-p-gray-400 text-inherit",
+								kv(c.variance().Form == FormDisabled, "placeholder-p-gray-400 cursor-not-allowed", "placeholder-p-gray-700") }
+							label={ c.label }
+							aria-label={ c.label }
+							aria-labelledby={ c.ID() }
+							if c.variance().Form == FormDisabled {
+								disabled
+							}
+							{ c.getAttrs("input")... }
+							if c.getAttr("input", "type").(InputType) == InputTypePassword {
+								x-bind:type="type"
+							}
+						/>
+						if c.getAttr("input", "type").(InputType) == InputTypePassword {
+							<button class="rounded-sm focus-visible:focus-ring" type="button" x-on:click.prevent="type = type === 'password' ? 'text' : 'password'">
+								@Icon("eye").Size(c.getIconSize()).StrokeColor(Color(Gray, 700)).Attr("x-show", "type === 'password'")
+								@Icon("eye-closed").Size(c.getIconSize()).StrokeColor(Color(Gray, 700)).Attr("x-show", "type !== 'password'")
+							</button>
+						}
+						if c.clearable {
+							<button class="rounded-sm focus-visible:focus-ring" type="button" x-on:click.prevent="value = ''" x-show="value.trim().length !== 0">
+								@Icon("x").Size(c.getIconSize()).StrokeColor(Color(Gray, 700))
+							</button>
+						}
+						if len(strings.TrimSpace(c.endIcon)) > 0 {
+							@Icon(c.endIcon).Size(c.getIconSize()).StrokeColor(Color(Gray, 700))
+						}
+					</div>
+					if c.suffix != nil {
+						<span
+							class={
+								"flex items-center h-full px-3 border text-p-gray-900 border-p-gray-400",
+								kv(c.variance().Size == SizeTiny, "rounded-r-md", "rounded-r-lg"),
+							}
+						>
+							@c.suffix
+						</span>
+					}
+				</div>
+			</div>
+			if has(c.error) {
+				<div class="flex gap-2 text-xs text-p-red-900">
+					@Icon("alert-octagon").Size(c.getIconSize()).StrokeColor(Color(Red, 900))
+					<span>
+						{ c.error }
+					</span>
+				</div>
+			}
+			if has(c.formError) {
+				<div class="hidden gap-2 text-xs text-p-red-900 form-error">
+					@Icon("alert-octagon").Size(c.getIconSize()).StrokeColor(Color(Red, 900))
+					<span>
+						{ c.formError }
+					</span>
+				</div>
+			}
+		</div>
+	</label>
+}
+
+type InputComponent struct {
+	VariantComponent[*InputComponent]
+	fullWidth      bool
+	label          string
+	invisibleLabel bool
+	clearable      bool
+	startIcon      string
+	endIcon        string
+	prefix         templ.Component
+	suffix         templ.Component
+	error          string
+	formError      string
+}
+
+type InputType string
+
+const (
+	InputTypeText     InputType = "text"
+	InputTypePassword InputType = "password"
+	InputTypeEmail    InputType = "email"
+	InputTypeNumber   InputType = "number"
+	InputTypeTel      InputType = "tel"
+	InputTypeUrl      InputType = "url"
+	InputTypeSearch   InputType = "search"
+	InputTypeDate     InputType = "date"
+	InputTypeTime     InputType = "time"
+	InputTypeWeek     InputType = "week"
+	InputTypeMonth    InputType = "month"
+	InputTypeDatetime InputType = "datetime"
+	InputTypeColor    InputType = "color"
+)
+
+func (c *InputComponent) Type(typ InputType) *InputComponent {
+	c.setAttr("type", typ, "input")
+	return c
+}
+
+func (c *InputComponent) Disabled(disabled bool) *InputComponent {
+	if disabled {
+		return c.Variant(FormDisabled)
+	} else {
+		return c.Variant(FormEnabled)
+	}
+}
+
+func (c *InputComponent) Placeholder(placeholder string) *InputComponent {
+	c.setAttr("placeholder", placeholder, "input")
+	return c
+}
+
+func (c *InputComponent) Required(required bool) *InputComponent {
+	c.setAttr("required", required, "input")
+	return c
+}
+
+func (c *InputComponent) Readonly(readonly bool) *InputComponent {
+	c.setAttr("readonly", readonly, "input")
+	return c
+}
+
+func (c *InputComponent) Autofocus(autofocus bool) *InputComponent {
+	c.setAttr("autofocus", autofocus, "input")
+	return c
+}
+
+func (c *InputComponent) FullWidth() *InputComponent {
+	c.fullWidth = true
+	return c
+}
+
+func (c *InputComponent) Label(label string) *InputComponent {
+	c.label = label
+	return c
+}
+
+func (c *InputComponent) Clearable() *InputComponent {
+	c.clearable = true
+	return c
+}
+
+func (c *InputComponent) StartIcon(icon string) *InputComponent {
+	c.startIcon = icon
+	return c
+}
+
+func (c *InputComponent) EndIcon(icon string) *InputComponent {
+	c.endIcon = icon
+	return c
+}
+
+func (c *InputComponent) Prefix(prefix templ.Component) *InputComponent {
+	c.prefix = prefix
+	return c
+}
+
+func (c *InputComponent) Suffix(suffix templ.Component) *InputComponent {
+	c.suffix = suffix
+	return c
+}
+
+func (c *InputComponent) PrefixText(prefix string) *InputComponent {
+	c.prefix = textRenderer{data: prefix}
+	return c
+}
+
+func (c *InputComponent) SuffixText(suffix string) *InputComponent {
+	c.suffix = textRenderer{data: suffix}
+	return c
+}
+
+func (c *InputComponent) Error(err string) *InputComponent {
+	c.error = err
+	return c
+}
+
+func (c *InputComponent) Eerror(err error) *InputComponent {
+	if err != nil {
+		c.error = err.Error()
+	}
+	return c
+}
+
+func (c *InputComponent) FormError(err string) *InputComponent {
+	c.formError = err
+	return c
+}
+
+func (c *InputComponent) Value(value string) *InputComponent {
+	c.setAttr("value", value)
+	return c
+}
+
+func Input() *InputComponent {
+	c := &InputComponent{}
+	c.Component = NewComponent(c, input)
+	c.setAttr("type", InputTypeText, "input")
+	c.setAttr("placeholder", "")
+
+	return c
+}

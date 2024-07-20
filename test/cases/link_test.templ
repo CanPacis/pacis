@@ -1,0 +1,23 @@
+package test
+
+import "github.com/CanPacis/pacis/ui"
+
+templ linkTest() {
+	<div class="flex gap-2">
+		@ui.Link("https://google.com") {
+			Google
+		}
+		@ui.Link("https://google.com").Target(ui.LinkTargetBlank) {
+			Google Blank
+		}
+		@ui.Link("/") {
+			No Referrer
+		}
+	</div>
+}
+
+func init() {
+	page := NewTestPage(UITestPage, "Link", "A link is a UI element that enables users to navigate to another page, section, or resource when clicked or tapped, often displayed as underlined or styled text.", "link")
+	page.Define("Link", linkTest())
+	RegisterPage(page)
+}
