@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
+	"path"
 
 	test "github.com/CanPacis/pacis/test/cases"
 	"github.com/CanPacis/pacis/test/config"
@@ -20,13 +22,14 @@ func main() {
 		views.Home(pages).Render(app.Context(r), w)
 	})
 
+	wd, _ := os.Getwd()
+	mux.Handle("GET /public/", http.StripPrefix("/public", http.FileServer(http.Dir(path.Join(wd, "test", "public")))))
+
 	for _, page := range pages {
 		mux.HandleFunc("GET "+page.Path(), func(w http.ResponseWriter, r *http.Request) {
 			views.TestPage(page).Render(app.Context(r), w)
 		})
 	}
-
-	mux.Handle("GET /public/", http.StripPrefix("/public", http.FileServer(http.Dir("public"))))
 
 	for _, resource := range app.Provider.Resources {
 		mux.HandleFunc(fmt.Sprintf("GET /public/%s", resource.Name), func(w http.ResponseWriter, r *http.Request) {

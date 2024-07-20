@@ -185,8 +185,8 @@ func avatarGroupTest() templ.Component {
 			return templ_7745c5c3_Err
 		}
 		templ_7745c5c3_Err = ui.AvatarGroup(
-			ui.Avatar("Jodie Whittaker").Img("/public/13.webp").Variant(ui.SizeHuge),
-			ui.Avatar("Peter Capaldi").Img("/public/12.avif").Variant(ui.SizeHuge),
+			ui.Avatar("Jodie Whittaker").Img("/public/13.jpg").Variant(ui.SizeHuge),
+			ui.Avatar("Peter Capaldi").Img("/public/12.jpg").Variant(ui.SizeHuge),
 			ui.Avatar("Matt Smith").Img("/public/11.jpg").Variant(ui.SizeHuge),
 			ui.Avatar("David Tennant").Img("/public/10.jpg").Variant(ui.SizeHuge),
 			ui.Avatar("Christopher Eccleston").Img("/public/9.jpg").Variant(ui.SizeHuge),
@@ -195,8 +195,8 @@ func avatarGroupTest() templ.Component {
 			return templ_7745c5c3_Err
 		}
 		templ_7745c5c3_Err = ui.AvatarGroup(
-			ui.Avatar("Jodie Whittaker").Img("/public/13.webp").Variant(ui.SizeLarge),
-			ui.Avatar("Peter Capaldi").Img("/public/12.avif").Variant(ui.SizeLarge),
+			ui.Avatar("Jodie Whittaker").Img("/public/13.jpg").Variant(ui.SizeLarge),
+			ui.Avatar("Peter Capaldi").Img("/public/12.jpg").Variant(ui.SizeLarge),
 			ui.Avatar("Matt Smith").Img("/public/11.jpg").Variant(ui.SizeLarge),
 			ui.Avatar("David Tennant").Img("/public/10.jpg").Variant(ui.SizeLarge),
 			ui.Avatar("Christopher Eccleston").Img("/public/9.jpg").Variant(ui.SizeLarge),
@@ -205,8 +205,8 @@ func avatarGroupTest() templ.Component {
 			return templ_7745c5c3_Err
 		}
 		templ_7745c5c3_Err = ui.AvatarGroup(
-			ui.Avatar("Jodie Whittaker").Img("/public/13.webp"),
-			ui.Avatar("Peter Capaldi").Img("/public/12.avif"),
+			ui.Avatar("Jodie Whittaker").Img("/public/13.jpg"),
+			ui.Avatar("Peter Capaldi").Img("/public/12.jpg"),
 			ui.Avatar("Matt Smith").Img("/public/11.jpg"),
 			ui.Avatar("David Tennant").Img("/public/10.jpg"),
 			ui.Avatar("Christopher Eccleston").Img("/public/9.jpg"),
@@ -215,8 +215,8 @@ func avatarGroupTest() templ.Component {
 			return templ_7745c5c3_Err
 		}
 		templ_7745c5c3_Err = ui.AvatarGroup(
-			ui.Avatar("Jodie Whittaker").Img("/public/13.webp").Variant(ui.SizeSmall),
-			ui.Avatar("Peter Capaldi").Img("/public/12.avif").Variant(ui.SizeSmall),
+			ui.Avatar("Jodie Whittaker").Img("/public/13.jpg").Variant(ui.SizeSmall),
+			ui.Avatar("Peter Capaldi").Img("/public/12.jpg").Variant(ui.SizeSmall),
 			ui.Avatar("Matt Smith").Img("/public/11.jpg").Variant(ui.SizeSmall),
 			ui.Avatar("David Tennant").Img("/public/10.jpg").Variant(ui.SizeSmall),
 			ui.Avatar("Christopher Eccleston").Img("/public/9.jpg").Variant(ui.SizeSmall),
@@ -225,8 +225,8 @@ func avatarGroupTest() templ.Component {
 			return templ_7745c5c3_Err
 		}
 		templ_7745c5c3_Err = ui.AvatarGroup(
-			ui.Avatar("Jodie Whittaker").Img("/public/13.webp").Variant(ui.SizeTiny),
-			ui.Avatar("Peter Capaldi").Img("/public/12.avif").Variant(ui.SizeTiny),
+			ui.Avatar("Jodie Whittaker").Img("/public/13.jpg").Variant(ui.SizeTiny),
+			ui.Avatar("Peter Capaldi").Img("/public/12.jpg").Variant(ui.SizeTiny),
 			ui.Avatar("Matt Smith").Img("/public/11.jpg").Variant(ui.SizeTiny),
 			ui.Avatar("David Tennant").Img("/public/10.jpg").Variant(ui.SizeTiny),
 			ui.Avatar("Christopher Eccleston").Img("/public/9.jpg").Variant(ui.SizeTiny),
@@ -265,8 +265,8 @@ func avatarGroupOverflowTest() templ.Component {
 			return templ_7745c5c3_Err
 		}
 		templ_7745c5c3_Err = ui.AvatarGroup(
-			ui.Avatar("Jodie Whittaker").Img("/public/13.webp"),
-			ui.Avatar("Peter Capaldi").Img("/public/12.avif"),
+			ui.Avatar("Jodie Whittaker").Img("/public/13.jpg"),
+			ui.Avatar("Peter Capaldi").Img("/public/12.jpg"),
 			ui.Avatar("Matt Smith").Img("/public/11.jpg"),
 			ui.Avatar("David Tennant").Img("/public/10.jpg"),
 			ui.Avatar("Christopher Eccleston").Img("/public/9.jpg"),
@@ -275,8 +275,8 @@ func avatarGroupOverflowTest() templ.Component {
 			return templ_7745c5c3_Err
 		}
 		templ_7745c5c3_Err = ui.AvatarGroup(
-			ui.Avatar("Jodie Whittaker").Tooltip().Img("/public/13.webp"),
-			ui.Avatar("Peter Capaldi").Tooltip().Img("/public/12.avif"),
+			ui.Avatar("Jodie Whittaker").Tooltip().Img("/public/13.jpg"),
+			ui.Avatar("Peter Capaldi").Tooltip().Img("/public/12.jpg"),
 			ui.Avatar("Matt Smith").Tooltip().Img("/public/11.jpg"),
 			ui.Avatar("David Tennant").Tooltip().Img("/public/10.jpg"),
 			ui.Avatar("Christopher Eccleston").Tooltip().Img("/public/9.jpg"),
