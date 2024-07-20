@@ -10,13 +10,8 @@ tasks:
   generate-templ:
     cmds:
       - templ generate
-  build:
-    cmds:
-      - task build-tailwind
-      - task generate-templ
-      - go build -o ./tmp/main .
   dev:
     cmds:
       - task dev-tailwind
       - cd test && task generate-templ
-      - go build -o ./tmp/main ./test/main.go
+      - go build -o ./test/tmp/main ./test/main.go

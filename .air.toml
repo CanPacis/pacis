@@ -4,10 +4,10 @@ tmp_dir = "tmp"
 
 [build]
   args_bin = []
-  bin = "./tmp/main"
+  bin = "./test/tmp/main"
   cmd = "task dev"
   delay = 1000
-  exclude_dir = ["assets", "tmp", "vendor", "public", "testdata", "components/icons"]
+  exclude_dir = ["assets", "tmp", "vendor", "public", "testdata", "icons/icons"]
   exclude_file = []
   exclude_regex = [".*_templ.go", "_test.go"]
   exclude_unchanged = false
