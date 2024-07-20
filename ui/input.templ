@@ -1,6 +1,9 @@
 package ui
 
-import "strings"
+import (
+	"fmt"
+	"strings"
+)
 
 func (c *InputComponent) getIconSize() int {
 	switch c.variance().Size {
@@ -22,7 +25,7 @@ templ input(c *InputComponent) {
 			x-data="{ type: 'password', value: '' }"
 		} else {
 			if c.clearable {
-				x-data="{ value: '' }"
+				x-data={ fmt.Sprintf("{ value: '%s' }", c.getAttr("input", "value")) }
 			} else {
 				x-data
 			}
@@ -86,8 +89,8 @@ templ input(c *InputComponent) {
 							if c.clearable {
 								x-model:value="value"
 							}
-							class={ "flex-1 h-full border-none outline-none bg-p-background-100 border-p-gray-400 text-inherit",
-								kv(c.variance().Form == FormDisabled, "placeholder-p-gray-400 cursor-not-allowed", "placeholder-p-gray-700") }
+							class={ "flex-1 h-full border-none outline-none bg-p-background-100 border-p-gray-400",
+								kv(c.variance().Form == FormDisabled, "placeholder-p-gray-400 cursor-not-allowed text-p-gray-700", "placeholder-p-gray-700 text-inherit") }
 							label={ c.label }
 							aria-label={ c.label }
 							aria-labelledby={ c.ID() }
@@ -274,7 +277,7 @@ func (c *InputComponent) FormError(err string) *InputComponent {
 }
 
 func (c *InputComponent) Value(value string) *InputComponent {
-	c.setAttr("value", value)
+	c.setAttr("value", value, "input")
 	return c
 }
 
@@ -282,7 +285,8 @@ func Input() *InputComponent {
 	c := &InputComponent{}
 	c.Component = NewComponent(c, input)
 	c.setAttr("type", InputTypeText, "input")
-	c.setAttr("placeholder", "")
+	c.setAttr("value", "", "input")
+	c.setAttr("placeholder", "", "input")
 
 	return c
 }

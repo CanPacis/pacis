@@ -83,6 +83,9 @@ func filterClass(classes []string, remove []string) []string {
 	result := []string{}
 
 	for _, class := range classes {
+		if len(class) == 0 {
+			continue
+		}
 		if !slices.Contains(remove, class) {
 			result = append(result, class)
 		}

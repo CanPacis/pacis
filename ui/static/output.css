@@ -1331,6 +1331,10 @@ video {
   color: var(--pacis-gray-500);
 }
 
+.text-p-gray-700 {
+  color: var(--pacis-gray-700);
+}
+
 .text-p-gray-900 {
   color: var(--pacis-gray-900);
 }
