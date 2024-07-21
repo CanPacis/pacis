@@ -1,0 +1,181 @@
+package ui
+
+func (c MenuItemComponent) getIconSize() int {
+	return 16
+}
+
+func (c MenuItemComponent) getClasses() string {
+	return class(c.classList, "flex items-center justify-center rounded-md hover:bg-p-gray-alpha-100 focus-visible:bg-p-gray-alpha-100 text-p-gray-1000 cursor-pointer outline-none focusable",
+		kv(c.fullwidth, "w-full", "w-fit"),
+		sw(c.variance().Size,
+			[]Variant{SizeHuge, SizeLarge, SizeMedium, SizeSmall, SizeTiny},
+			"h-12 gap-3 px-3 text-base",
+			"h-11 gap-2 px-3 text-sm",
+			"h-10 gap-2 px-2 text-sm",
+			"h-9 gap-2 px-2 text-xs",
+			"h-8 gap-1 px-2 text-[0.625rem]",
+		),
+	)
+}
+
+templ menuItem(c *MenuItemComponent) {
+	if has(c.link) {
+		<a
+			href={ c.link }
+			class={ c.getClasses() }
+			{ c.getAttrs("base")... }
+		>
+			if has(c.startIcon) {
+				@Icon(c.startIcon).Size(c.getIconSize())
+			}
+			<span class="flex flex-1">
+				{ children... }
+			</span>
+			if has(c.endIcon) {
+				@Icon(c.endIcon).Size(c.getIconSize())
+			}
+		</a>
+	} else {
+		<button
+			class={ c.getClasses() }
+			{ c.getAttrs("base")... }
+		>
+			if has(c.startIcon) {
+				@Icon(c.startIcon).Size(c.getIconSize())
+			}
+			<span class="flex flex-1">
+				{ children... }
+			</span>
+			if has(c.endIcon) {
+				@Icon(c.endIcon).Size(c.getIconSize())
+			}
+		</button>
+	}
+}
+
+type MenuItemComponent struct {
+	VariantComponent[*MenuItemComponent]
+	startIcon string
+	endIcon   string
+	fullwidth bool
+	link      templ.SafeURL
+}
+
+func (c *MenuItemComponent) StartIcon(icon string) *MenuItemComponent {
+	c.startIcon = icon
+	return c
+}
+
+func (c *MenuItemComponent) EndIcon(icon string) *MenuItemComponent {
+	c.endIcon = icon
+	return c
+}
+
+func (c *MenuItemComponent) FullWidth() *MenuItemComponent {
+	c.fullwidth = true
+	return c
+}
+
+func (c *MenuItemComponent) Link(link templ.SafeURL) *MenuItemComponent {
+	c.link = link
+	return c
+}
+
+func MenuItem() *MenuItemComponent {
+	c := &MenuItemComponent{}
+	c.Component = NewComponent(c, menuItem)
+
+	return c
+}
+
+templ menu(c *MenuComponent) {
+	<div x-data="{ open: false }" class="size-fit">
+		<div
+			x-focusable="open = true"
+			x-child-on:click="open = true"
+			x-ref="anchor"
+			class="size-fit"
+		>
+			{ children... }
+		</div>
+		<div
+			x-show="open"
+			x-menu
+			data-close-menu="open = false"
+			data-is-menu-open="open"
+			class={ class(c.classList, "border bg-p-background-100 border-p-gray-400 rounded-xl flex flex-col gap-1 z-[99999]",
+        sw(c.variance().Size,
+          []Variant{SizeHuge, SizeLarge, SizeMedium, SizeSmall, SizeTiny},
+          "p-2 min-w-52",
+          "p-2 min-w-48",
+          "p-2 min-w-44",
+          "p-2 min-w-40",
+          "p-1 min-w-36",
+        ),
+      ) }
+			{ generateAnchor(c.position, 8)... }
+			{ c.getAttrs("base")... }
+		>
+			for _, item := range c.items {
+				@MenuItem().StartIcon(item.startIcon).EndIcon(item.endIcon).FullWidth().Attr("x-on:click", "open = false;await $nextTick();"+item.action).Link(item.link).Variant(c.variance().Size) {
+					{ item.label }
+				}
+			}
+		</div>
+	</div>
+}
+
+type MenuComponent struct {
+	VariantComponent[*MenuComponent]
+	items    []*ActionItem
+	position AnchorPosition
+}
+
+func (c *MenuComponent) Position(position AnchorPosition) *MenuComponent {
+	c.position = position
+	return c
+}
+
+func Menu(items ...*ActionItem) *MenuComponent {
+	c := &MenuComponent{
+		items:    items,
+		position: AnchorBottomEnd,
+	}
+	c.Component = NewComponent(c, menu)
+
+	return c
+}
+
+type ActionItem struct {
+	label     string
+	startIcon string
+	endIcon   string
+	action    string
+	link      templ.SafeURL
+}
+
+func (i *ActionItem) StartIcon(icon string) *ActionItem {
+	i.startIcon = icon
+	return i
+}
+
+func (i *ActionItem) EndIcon(icon string) *ActionItem {
+	i.endIcon = icon
+	return i
+}
+
+func (i *ActionItem) Action(action string) *ActionItem {
+	i.action = action
+	return i
+}
+
+func (i *ActionItem) Link(link templ.SafeURL) *ActionItem {
+	i.link = link
+	return i
+}
+
+func Action(label string) *ActionItem {
+	return &ActionItem{
+		label: label,
+	}
+}

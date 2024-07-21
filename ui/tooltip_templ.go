@@ -23,15 +23,6 @@ func delay(delay time.Duration) templ.CSSClass {
 	}
 }
 
-func (c *TooltipComponent) generateAnchor() map[string]any {
-	anchor := map[string]any{}
-
-	key := fmt.Sprintf("x-anchor.%s.offset.10", tooltipPositionMap[c.position])
-	anchor[key] = "$refs.trigger"
-
-	return anchor
-}
-
 func tooltip(c *TooltipComponent) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
@@ -62,7 +53,7 @@ func tooltip(c *TooltipComponent) templ.Component {
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(kv(c.hover, "", "{ hover:false }"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/tooltip.templ`, Line: 24, Col: 45}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/tooltip.templ`, Line: 15, Col: 45}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
@@ -81,7 +72,7 @@ func tooltip(c *TooltipComponent) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><span x-ref=\"trigger\" class=\"size-fit\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><span x-ref=\"anchor\" class=\"size-fit\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -126,7 +117,7 @@ func tooltip(c *TooltipComponent) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, c.generateAnchor())
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, generateAnchor(c.position, 10))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -141,7 +132,7 @@ func tooltip(c *TooltipComponent) templ.Component {
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(c.label)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/tooltip.templ`, Line: 39, Col: 12}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/tooltip.templ`, Line: 30, Col: 12}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
@@ -155,43 +146,11 @@ func tooltip(c *TooltipComponent) templ.Component {
 	})
 }
 
-type TooltipPosition int
-
-const (
-	TooltipTopCenter TooltipPosition = iota
-	TooltipTopStart
-	TooltipTopEnd
-	TooltipRightCenter
-	TooltipRightStart
-	TooltipRightEnd
-	TooltipBottomCenter
-	TooltipBottomStart
-	TooltipBottomEnd
-	TooltipLeftCenter
-	TooltipLeftStart
-	TooltipLeftEnd
-)
-
-var tooltipPositionMap = map[TooltipPosition]string{
-	TooltipTopCenter:    "top",
-	TooltipTopStart:     "top-start",
-	TooltipTopEnd:       "top-end",
-	TooltipRightCenter:  "right",
-	TooltipRightStart:   "right-start",
-	TooltipRightEnd:     "right-end",
-	TooltipBottomCenter: "bottom",
-	TooltipBottomStart:  "bottom-start",
-	TooltipBottomEnd:    "bottom-end",
-	TooltipLeftCenter:   "left",
-	TooltipLeftStart:    "left-start",
-	TooltipLeftEnd:      "left-end",
-}
-
 type TooltipComponent struct {
 	Component[*TooltipComponent]
 	label    string
 	delay    time.Duration
-	position TooltipPosition
+	position AnchorPosition
 	hover    bool
 }
 
@@ -200,7 +159,7 @@ func (c *TooltipComponent) Delay(delay time.Duration) *TooltipComponent {
 	return c
 }
 
-func (c *TooltipComponent) Position(position TooltipPosition) *TooltipComponent {
+func (c *TooltipComponent) Position(position AnchorPosition) *TooltipComponent {
 	c.position = position
 	return c
 }

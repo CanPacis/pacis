@@ -679,6 +679,10 @@ video {
   z-index: 50;
 }
 
+.z-\[99999\] {
+  z-index: 99999;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -837,6 +841,10 @@ video {
   height: 2.5rem;
 }
 
+.h-11 {
+  height: 2.75rem;
+}
+
 .h-12 {
   height: 3rem;
 }
@@ -863,6 +871,10 @@ video {
 
 .h-8 {
   height: 2rem;
+}
+
+.h-9 {
+  height: 2.25rem;
 }
 
 .h-\[14px\] {
@@ -909,6 +921,26 @@ video {
 
 .min-w-16 {
   min-width: 4rem;
+}
+
+.min-w-36 {
+  min-width: 9rem;
+}
+
+.min-w-40 {
+  min-width: 10rem;
+}
+
+.min-w-44 {
+  min-width: 11rem;
+}
+
+.min-w-48 {
+  min-width: 12rem;
+}
+
+.min-w-52 {
+  min-width: 13rem;
 }
 
 .max-w-\[min\(720px\2c _94\%\)\] {
@@ -1154,6 +1186,10 @@ video {
      object-fit: cover;
 }
 
+.p-1 {
+  padding: 0.25rem;
+}
+
 .p-2 {
   padding: 0.5rem;
 }
@@ -1264,6 +1300,10 @@ video {
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
+}
+
+.text-\[0\.625rem\] {
+  font-size: 0.625rem;
 }
 
 .text-\[10px\] {
@@ -1769,8 +1809,16 @@ body {
   background-color: var(--pacis-gray-300);
 }
 
+.hover\:bg-p-gray-alpha-100:hover {
+  background-color: var(--pacis-gray-alpha-100);
+}
+
 .hover\:bg-p-gray-alpha-200:hover {
   background-color: var(--pacis-gray-alpha-200);
+}
+
+.focus-visible\:bg-p-gray-alpha-100:focus-visible {
+  background-color: var(--pacis-gray-alpha-100);
 }
 
 .active\:translate-y-\[1px\]:active {

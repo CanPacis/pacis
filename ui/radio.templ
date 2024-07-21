@@ -17,7 +17,7 @@ templ radio(c *RadioComponent) {
 			} else {
 				aria-checked="false"
 			}
-      x-check
+      x-fire
 			aria-labelledby={ c.ID() }
 			class={ class(c.classList, "flex items-center justify-center border rounded-full size-5 bg-p-gray-100", "focus-visible:focus-ring", "focusable", kv(c.variance().Form == FormDisabled, "border-p-gray-500", "border-p-gray-900")) }
 		>

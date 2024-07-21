@@ -52,6 +52,8 @@ func has(data any) bool {
 			return len(strings.TrimSpace(*data)) > 0
 		}
 		return false
+	case templ.SafeURL:
+		return len(strings.TrimSpace(string(data))) > 0
 	case any:
 		str, ok := data.(string)
 		if !ok {
@@ -162,4 +164,45 @@ type textRenderer struct {
 func (r textRenderer) Render(ctx context.Context, w io.Writer) error {
 	_, err := w.Write([]byte(html.EscapeString(r.data)))
 	return err
+}
+
+func generateAnchor(position AnchorPosition, offset int) map[string]any {
+	anchor := map[string]any{}
+
+	key := fmt.Sprintf("x-anchor.%s.offset.%d", anchorPositionMap[position], offset)
+	anchor[key] = "$refs.anchor"
+
+	return anchor
+}
+
+type AnchorPosition int
+
+const (
+	AnchorTopCenter AnchorPosition = iota
+	AnchorTopStart
+	AnchorTopEnd
+	AnchorRightCenter
+	AnchorRightStart
+	AnchorRightEnd
+	AnchorBottomCenter
+	AnchorBottomStart
+	AnchorBottomEnd
+	AnchorLeftCenter
+	AnchorLeftStart
+	AnchorLeftEnd
+)
+
+var anchorPositionMap = map[AnchorPosition]string{
+	AnchorTopCenter:    "top",
+	AnchorTopStart:     "top-start",
+	AnchorTopEnd:       "top-end",
+	AnchorRightCenter:  "right",
+	AnchorRightStart:   "right-start",
+	AnchorRightEnd:     "right-end",
+	AnchorBottomCenter: "bottom",
+	AnchorBottomStart:  "bottom-start",
+	AnchorBottomEnd:    "bottom-end",
+	AnchorLeftCenter:   "left",
+	AnchorLeftStart:    "left-start",
+	AnchorLeftEnd:      "left-end",
 }
