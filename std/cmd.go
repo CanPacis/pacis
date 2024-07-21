@@ -6,24 +6,26 @@ import (
 	"github.com/CanPacis/pacis/ui"
 )
 
-func ThemeMiddleware(app *ui.App, next func(w http.ResponseWriter, r *http.Request)) func(w http.ResponseWriter, r *http.Request) {
-	return func(w http.ResponseWriter, r *http.Request) {
-		cookie, err := r.Cookie("color-scheme")
-		if err != nil {
-			next(w, r)
-			return
-		}
+func ThemeMiddleware(app *ui.App) func(next http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			cookie, err := r.Cookie("color-scheme")
+			if err != nil {
+				next.ServeHTTP(w, r)
+				return
+			}
 
-		switch cookie.Value {
-		case ui.Dark.String():
-			app.Theme.ColorScheme = ui.Dark
-		case ui.Light.String():
-			app.Theme.ColorScheme = ui.Light
-		default:
-			app.Theme.ColorScheme = ui.Light
-		}
+			switch cookie.Value {
+			case ui.Dark.String():
+				app.Theme.ColorScheme = ui.Dark
+			case ui.Light.String():
+				app.Theme.ColorScheme = ui.Light
+			default:
+				app.Theme.ColorScheme = ui.Light
+			}
 
-		next(w, r)
+			next.ServeHTTP(w, r)
+		})
 	}
 }
 

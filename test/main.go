@@ -21,18 +21,18 @@ func main() {
 		ResourcePrefix: "public",
 	})
 
-	mux.HandleFunc("GET /", std.ThemeMiddleware(app, func(w http.ResponseWriter, r *http.Request) {
+	mux.Handle("GET /", std.ThemeMiddleware(app)(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		views.Home(pages).Render(app.Context(r.Context()), w)
-	}))
+	})))
 
 	mux.Handle("GET /public/",
 		http.StripPrefix("/public/", http.FileServerFS(app.ResourceProvider.FS(ui.MustSubFS(public, "public")))),
 	)
 
 	for _, page := range pages {
-		mux.HandleFunc("GET "+page.Path(), std.ThemeMiddleware(app, func(w http.ResponseWriter, r *http.Request) {
+		mux.Handle("GET "+page.Path(), std.ThemeMiddleware(app)(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			views.TestPage(page).Render(app.Context(r.Context()), w)
-		}))
+		})))
 	}
 
 	mux.HandleFunc("GET /web/theme", std.ColorSchemeHandler)
