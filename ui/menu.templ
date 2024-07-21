@@ -117,8 +117,8 @@ templ menu(c *MenuComponent) {
 			{ c.getAttrs("base")... }
 		>
 			for _, item := range c.items {
-				@MenuItem().StartIcon(item.startIcon).EndIcon(item.endIcon).FullWidth().Attr("x-on:click", "open = false;await $nextTick();"+item.action).Link(item.link).Variant(c.variance().Size) {
-					{ item.label }
+				@MenuItem().StartIcon(getStartIconFromOption(item)).EndIcon(getEndIconFromOption(item)).FullWidth().Attr("x-on:click", "open = false;await $nextTick();"+getActionFromOption(item)).Link(getLinkFromOption(item)).Variant(c.variance().Size) {
+					{ item.GetLabel() }
 				}
 			}
 		</div>
@@ -127,7 +127,7 @@ templ menu(c *MenuComponent) {
 
 type MenuComponent struct {
 	VariantComponent[*MenuComponent]
-	items    []*ActionItem
+	items    []Option
 	position AnchorPosition
 }
 
@@ -136,7 +136,7 @@ func (c *MenuComponent) Position(position AnchorPosition) *MenuComponent {
 	return c
 }
 
-func Menu(items ...*ActionItem) *MenuComponent {
+func Menu(items ...Option) *MenuComponent {
 	c := &MenuComponent{
 		items:    items,
 		position: AnchorBottomEnd,
@@ -144,38 +144,4 @@ func Menu(items ...*ActionItem) *MenuComponent {
 	c.Component = NewComponent(c, menu)
 
 	return c
-}
-
-type ActionItem struct {
-	label     string
-	startIcon string
-	endIcon   string
-	action    string
-	link      templ.SafeURL
-}
-
-func (i *ActionItem) StartIcon(icon string) *ActionItem {
-	i.startIcon = icon
-	return i
-}
-
-func (i *ActionItem) EndIcon(icon string) *ActionItem {
-	i.endIcon = icon
-	return i
-}
-
-func (i *ActionItem) Action(action string) *ActionItem {
-	i.action = action
-	return i
-}
-
-func (i *ActionItem) Link(link templ.SafeURL) *ActionItem {
-	i.link = link
-	return i
-}
-
-func Action(label string) *ActionItem {
-	return &ActionItem{
-		label: label,
-	}
 }

@@ -69,9 +69,10 @@ document.addEventListener("alpine:init", () => {
     child.setAttribute(`x-on:${value}`, expression);
   });
 
-  Alpine.directive("menu", (el, {}, { evaluateLater, evaluate, effect }) => {
+  Alpine.directive("menu", (el, _, { evaluateLater, evaluate, effect }) => {
     const getIsOpen = evaluateLater(el.getAttribute("data-is-menu-open"));
     const closeMenu = el.getAttribute("data-close-menu");
+    const autofocus = el.getAttribute("data-autofocus");
 
     const closeHandler = (e) => {
       if (!e.composedPath().includes(el)) {
@@ -80,7 +81,9 @@ document.addEventListener("alpine:init", () => {
     };
 
     const trapFocus = () => {
-      const items = tabbable.focusable(el);
+      const items = tabbable
+        .focusable(el)
+        .filter((el) => el.getAttribute("aria-hidden"));
       if (items.length === 0) {
         return;
       }
@@ -96,7 +99,10 @@ document.addEventListener("alpine:init", () => {
         return items[currentFocusIndex];
       };
 
-      items[currentFocusIndex].focus();
+      if (autofocus) {
+        items[currentFocusIndex].focus();
+      }
+
       const trapHandler = (e) => {
         if (e.key === "Tab") {
           e.preventDefault();
@@ -150,6 +156,53 @@ document.addEventListener("alpine:init", () => {
       });
     });
   });
+
+  const fuzzy = new window.uFuzzy({});
+
+  Alpine.directive(
+    "autocomplete",
+    (el, { expression }, { evaluate, evaluateLater, effect }) => {
+      const id = evaluate(expression);
+      const input = el.querySelector("input[type='search']");
+      const data = JSON.parse(document.getElementById(id).textContent);
+
+      input.addEventListener("input", (e) => {});
+
+      const valueGetter = evaluateLater("value");
+
+      effect(() => {
+        valueGetter((value) => {
+          if (value.trim().length === 0) {
+            evaluate("open = false");
+            return;
+          }
+
+          const found = fuzzy
+            .filter(
+              data.map((d) => d.label),
+              value
+            )
+            .map((d) => data[d]);
+
+          const options = el.querySelectorAll(`[data-id]`);
+
+          if (found.length > 0) {
+            for (const option of options) {
+              if (found.some((f) => f.id === option.getAttribute("data-id"))) {
+                option.setAttribute("x-show", "true");
+                option.setAttribute("aria-hidden", "true");
+              } else {
+                option.setAttribute("x-show", "false");
+                option.removeAttribute("aria-hidden");
+              }
+            }
+
+            evaluate("open = true");
+          }
+        });
+      });
+    }
+  );
 
   Alpine.store("tabs", {
     init() {

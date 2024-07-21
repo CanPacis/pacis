@@ -298,9 +298,9 @@ func menu(c *MenuComponent) templ.Component {
 				}
 				ctx = templ.InitializeContext(ctx)
 				var templ_7745c5c3_Var11 string
-				templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(item.label)
+				templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(item.GetLabel())
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/menu.templ`, Line: 121, Col: 17}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/menu.templ`, Line: 121, Col: 22}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 				if templ_7745c5c3_Err != nil {
@@ -308,7 +308,7 @@ func menu(c *MenuComponent) templ.Component {
 				}
 				return templ_7745c5c3_Err
 			})
-			templ_7745c5c3_Err = MenuItem().StartIcon(item.startIcon).EndIcon(item.endIcon).FullWidth().Attr("x-on:click", "open = false;await $nextTick();"+item.action).Link(item.link).Variant(c.variance().Size).Render(templ.WithChildren(ctx, templ_7745c5c3_Var10), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = MenuItem().StartIcon(getStartIconFromOption(item)).EndIcon(getEndIconFromOption(item)).FullWidth().Attr("x-on:click", "open = false;await $nextTick();"+getActionFromOption(item)).Link(getLinkFromOption(item)).Variant(c.variance().Size).Render(templ.WithChildren(ctx, templ_7745c5c3_Var10), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -323,7 +323,7 @@ func menu(c *MenuComponent) templ.Component {
 
 type MenuComponent struct {
 	VariantComponent[*MenuComponent]
-	items    []*ActionItem
+	items    []Option
 	position AnchorPosition
 }
 
@@ -332,7 +332,7 @@ func (c *MenuComponent) Position(position AnchorPosition) *MenuComponent {
 	return c
 }
 
-func Menu(items ...*ActionItem) *MenuComponent {
+func Menu(items ...Option) *MenuComponent {
 	c := &MenuComponent{
 		items:    items,
 		position: AnchorBottomEnd,
@@ -340,38 +340,4 @@ func Menu(items ...*ActionItem) *MenuComponent {
 	c.Component = NewComponent(c, menu)
 
 	return c
-}
-
-type ActionItem struct {
-	label     string
-	startIcon string
-	endIcon   string
-	action    string
-	link      templ.SafeURL
-}
-
-func (i *ActionItem) StartIcon(icon string) *ActionItem {
-	i.startIcon = icon
-	return i
-}
-
-func (i *ActionItem) EndIcon(icon string) *ActionItem {
-	i.endIcon = icon
-	return i
-}
-
-func (i *ActionItem) Action(action string) *ActionItem {
-	i.action = action
-	return i
-}
-
-func (i *ActionItem) Link(link templ.SafeURL) *ActionItem {
-	i.link = link
-	return i
-}
-
-func Action(label string) *ActionItem {
-	return &ActionItem{
-		label: label,
-	}
 }

@@ -97,10 +97,11 @@ templ input(c *InputComponent) {
 							if c.variance().Form == FormDisabled {
 								disabled
 							}
-							{ c.getAttrs("input")... }
 							if c.getAttr("input", "type").(InputType) == InputTypePassword {
 								x-bind:type="type"
 							}
+							type={ string(c.getAttr("input", "type").(InputType)) }
+							{ c.getAttrs("input")... }
 						/>
 						if c.getAttr("input", "type").(InputType) == InputTypePassword {
 							<button class="rounded-sm focus-visible:focus-ring" type="button" x-on:click.prevent="type = type === 'password' ? 'text' : 'password'">

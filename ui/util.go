@@ -206,3 +206,43 @@ var anchorPositionMap = map[AnchorPosition]string{
 	AnchorLeftStart:    "left-start",
 	AnchorLeftEnd:      "left-end",
 }
+
+func getStartIconFromOption(option Option) string {
+	switch option := option.(type) {
+	case *IconOption:
+		return option.startIcon
+	default:
+		return ""
+	}
+}
+
+func getEndIconFromOption(option Option) string {
+	switch option := option.(type) {
+	case *IconOption:
+		return option.endIcon
+	default:
+		return ""
+	}
+}
+
+func getActionFromOption(option Option) string {
+	switch option := option.(type) {
+	case *IconOption:
+		return getActionFromOption(option.root)
+	case *ActionOption:
+		return option.action
+	default:
+		return ""
+	}
+}
+
+func getLinkFromOption(option Option) templ.SafeURL {
+	switch option := option.(type) {
+	case *IconOption:
+		return getLinkFromOption(option.root)
+	case *LinkOption:
+		return option.link
+	default:
+		return ""
+	}
+}
