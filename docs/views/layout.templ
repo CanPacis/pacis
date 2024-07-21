@@ -1,0 +1,52 @@
+package views 
+
+import (
+	"context"
+	"github.com/CanPacis/pacis/ui"
+)
+
+templ Layout(title string) {
+	<!DOCTYPE html>
+	<html lang="en" data-theme={ ui.GetApp(ctx).Theme.ColorScheme.String() }>
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>{ title }</title>
+			@ui.GetApp(ctx).ResourceProvider.Head
+			<link rel="stylesheet" href="/public/style.css"/>
+		</head>
+		<body>
+			@header()
+			<main class="mt-14 min-h-[calc(100dvh-3.5rem)] flex">
+				{ children... }
+			</main>
+		</body>
+	</html>
+}
+
+func getNextScheme(ctx context.Context) string {
+	scheme := ui.GetApp(ctx).Theme.ColorScheme
+
+	if scheme == ui.Dark {
+		return ui.Light.String()
+	}
+
+	return ui.Dark.String()
+}
+
+templ header() {
+	<header class="fixed top-0 left-0 flex items-center justify-between w-full px-4 sm:px-8 md:px-20 h-14 bg-p-background-200">
+		@ui.Link(templ.URL("/")).AddClass("py-2 rounded") {
+			<img src="/public/logo.svg" height="24" width="80"/>
+		}
+		<nav class="flex gap-2">
+			@ui.Input().Type(ui.InputTypeSearch).Placeholder("Search...").Variant(ui.SizeSmall).StartIcon("search")
+			@ui.Link(templ.URL("https://github.com/CanPacis/pacis/")).Target(ui.LinkTargetBlank).Attr("tabindex", "-1") {
+				@ui.IconButton("brand-github").Variant(ui.SizeSmall | ui.ColorSubtle)
+			}
+			<form method="GET" action="/web/theme">
+				@ui.IconButton("moon").Variant(ui.SizeSmall | ui.ColorSubtle).Name("color-scheme").Type(ui.ButtonTypeSubmit).Value(getNextScheme(ctx))
+			</form>
+		</nav>
+	</header>
+}
