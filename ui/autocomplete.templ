@@ -1,0 +1,60 @@
+package ui
+
+import "fmt"
+
+templ autocomplete(c *AutocompleteComponent) {
+	@templ.JSONScript(c.ID(), toSerializedOptions(c.items))
+	<div x-data="{ open: false, value: '' }" x-autocomplete={ fmt.Sprintf("'%s'", c.ID()) }>
+		<div class="w-full" x-ref="anchor">
+			@Input().Type(InputTypeSearch).Placeholder("Search...").FullWidth().Attr("x-model:value", "value", "input")
+		</div>
+		<div
+			class="relative w-full"
+			x-show="open"
+			x-menu
+			data-close-menu="open = false"
+			data-is-menu-open="open"
+		>
+			<div
+				class={ class(c.classList, "border w-full bg-p-background-100 border-p-gray-400 rounded-xl flex flex-col gap-1 z-[99999]",
+        sw(c.variance().Size,
+          []Variant{SizeHuge, SizeLarge, SizeMedium, SizeSmall, SizeTiny},
+          "p-2 min-w-56",
+          "p-2 min-w-48",
+          "p-2 min-w-44",
+          "p-2 min-w-40",
+          "p-1 min-w-36",
+        ),
+      ) }
+				{ generateAnchor(AnchorBottomStart, 8)... }
+				{ c.getAttrs("base")... }
+			>
+				for _, item := range c.items {
+					@MenuItem().FullWidth().Attr("data-id", item.GetID()).Attr("x-on:click", fmt.Sprintf("value = '%s'; open = false", item.GetLabel())) {
+						{ item.GetLabel() }
+					}
+				}
+			</div>
+		</div>
+	</div>
+}
+
+type AutocompleteComponent struct {
+	VariantComponent[*AutocompleteComponent]
+	items     []Option
+	fullwidth bool
+}
+
+func (c *AutocompleteComponent) FullWidth() *AutocompleteComponent {
+	c.fullwidth = true
+	return c
+}
+
+func Autocomplete(items []Option) *AutocompleteComponent {
+	c := &AutocompleteComponent{
+		items: items,
+	}
+	c.Component = NewComponent(c, autocomplete)
+
+	return c
+}
