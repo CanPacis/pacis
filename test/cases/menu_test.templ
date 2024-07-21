@@ -1,0 +1,107 @@
+package test
+
+import "github.com/CanPacis/pacis/ui"
+
+templ menuSizeTest() {
+	<div class="flex items-center gap-2">
+		@ui.Menu(
+			ui.Action("Menu Item 1").StartIcon("home"),
+			ui.Action("Menu Item 2").Action("alert('Hi')"),
+			ui.Action("Menu Item 3").StartIcon("logout").Link("/"),
+		).Variant(ui.SizeHuge) {
+			@ui.Avatar("Muhammed Ali CAN").Variant(ui.SizeHuge)
+		}
+		@ui.Menu(
+			ui.Action("Menu Item 1").StartIcon("home"),
+			ui.Action("Menu Item 2"),
+			ui.Action("Menu Item 3").StartIcon("logout").Link("/"),
+		).Variant(ui.SizeLarge) {
+			@ui.Avatar("Muhammed Ali CAN").Variant(ui.SizeLarge)
+		}
+		@ui.Menu(
+			ui.Action("Menu Item 1").StartIcon("home"),
+			ui.Action("Menu Item 2"),
+			ui.Action("Menu Item 3").StartIcon("logout").Link("/"),
+		) {
+			@ui.Avatar("Muhammed Ali CAN")
+		}
+		@ui.Menu(
+			ui.Action("Menu Item 1").StartIcon("home"),
+			ui.Action("Menu Item 2"),
+			ui.Action("Menu Item 3").StartIcon("logout").Link("/"),
+		).Variant(ui.SizeSmall) {
+			@ui.Avatar("Muhammed Ali CAN").Variant(ui.SizeSmall)
+		}
+		@ui.Menu(
+			ui.Action("Menu Item 1").StartIcon("home"),
+			ui.Action("Menu Item 2"),
+			ui.Action("Menu Item 3").StartIcon("logout").Link("/"),
+		).Variant(ui.SizeTiny) {
+			@ui.Avatar("Muhammed Ali CAN").Variant(ui.SizeTiny)
+		}
+	</div>
+}
+
+templ menuItemTest() {
+	<div class="flex gap-2">
+		@ui.MenuItem() {
+			Simple menu item
+		}
+		@ui.MenuItem().StartIcon("home") {
+			Start icon menu item
+		}
+		@ui.MenuItem().EndIcon("trash") {
+			End icon menu item
+		}
+		@ui.MenuItem().EndIcon("home").Link("/") {
+			This is a link
+		}
+	</div>
+}
+
+templ menuItemSizeTest() {
+	<div class="flex items-center gap-2">
+		@ui.MenuItem().StartIcon("login").Variant(ui.SizeHuge) {
+			Menu Item
+		}
+		@ui.MenuItem().StartIcon("login").Variant(ui.SizeLarge) {
+			Menu Item
+		}
+		@ui.MenuItem().StartIcon("login") {
+			Menu Item
+		}
+		@ui.MenuItem().StartIcon("login").Variant(ui.SizeSmall) {
+			Menu Item
+		}
+		@ui.MenuItem().StartIcon("login").Variant(ui.SizeTiny) {
+			Menu Item
+		}
+	</div>
+}
+
+templ menuItemWidthTest() {
+	<div class="flex flex-col gap-1">
+		@ui.MenuItem().FullWidth() {
+			Simple Menu Item
+		}
+		@ui.MenuItem().StartIcon("home").FullWidth() {
+			Start Icon Menu Item
+		}
+		@ui.MenuItem().EndIcon("trash").FullWidth() {
+			End Icon Menu Item
+		}
+		@ui.MenuItem().StartIcon("download").EndIcon("versions").FullWidth() {
+			Dual Icon Menu Item
+		}
+	</div>
+}
+
+func init() {
+	page := NewTestPage(UITestPage, "Menu", "", "menu")
+	page.Define("Menu Sizes", menuSizeTest())
+	page.Define("Menu Item", menuItemTest())
+	page.Define("Menu Item Size", menuItemSizeTest())
+	page.Define("Menu Item Width", menuItemWidthTest())
+
+	RegisterPage(page)
+}
