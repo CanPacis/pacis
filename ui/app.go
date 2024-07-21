@@ -20,8 +20,11 @@ type ResourceProvider struct {
 	Head templ.Component
 }
 
-func (rp ResourceProvider) FS() fs.FS {
-	return rp.fs
+func (rp ResourceProvider) FS(merge fs.FS) fs.FS {
+	if merge != nil {
+		return MergeFS(MustSubFS(rp.fs, "static"), merge)
+	}
+	return MustSubFS(rp.fs, "static")
 }
 
 func script(src string, deffered bool) templ.Component {

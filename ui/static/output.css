@@ -755,13 +755,6 @@ video {
   margin-right: 1.5rem;
 }
 
-.line-clamp-1 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-}
-
 .\!block {
   display: block !important;
 }
@@ -1054,12 +1047,6 @@ video {
   gap: 10px;
 }
 
-.truncate {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 .whitespace-nowrap {
   white-space: nowrap;
 }
@@ -1310,8 +1297,8 @@ video {
   padding-right: 1.5rem;
 }
 
-.pt-28 {
-  padding-top: 7rem;
+.pt-20 {
+  padding-top: 5rem;
 }
 
 .text-center {
