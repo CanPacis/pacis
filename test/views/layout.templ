@@ -17,7 +17,7 @@ templ layout(title string) {
 	</html>
 }
 
-templ header(name, desc string) {
+templ header(name string) {
 	<header class="fixed top-0 left-0 z-50 w-full gap-4 px-6 py-4 bg-p-background-200">
 		<div class="flex items-center justify-between">
 			<div class="flex flex-col gap-2">
@@ -28,9 +28,6 @@ templ header(name, desc string) {
 						</h1>
 					}
 				</nav>
-				<p class="truncate line-clamp-1">
-					{ desc }
-				</p>
 			</div>
 			<form method="GET" action="/web/theme">
 				@ui.IconButton("brush").Variant(ui.SizeSmall).Attr("name", "color-scheme").Type(ui.ButtonTypeSubmit).Value(getNextScheme(ctx))

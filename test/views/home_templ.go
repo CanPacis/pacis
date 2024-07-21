@@ -43,11 +43,11 @@ func Home(pages []*test.TestPage) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = header("Home", "Components index.").Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = header("Home").Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" <main class=\"p-4 max-w-[min(720px,_94%)] mx-auto pt-28\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" <main class=\"p-4 max-w-[min(720px,_94%)] mx-auto pt-20\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

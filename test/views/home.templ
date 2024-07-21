@@ -7,8 +7,8 @@ import (
 
 templ Home(pages []*test.TestPage) {
 	@layout("Home") {
-		@header("Home", "Components index.")
-		<main class="p-4 max-w-[min(720px,_94%)] mx-auto pt-28">
+		@header("Home")
+		<main class="p-4 max-w-[min(720px,_94%)] mx-auto pt-20">
 			for _, page := range pages {
 				<p>
 					@ui.Link(templ.SafeURL(page.Path())) {

@@ -18,8 +18,8 @@ func getNextScheme(ctx context.Context) string {
 
 templ TestPage(page *test.TestPage) {
 	@layout("Test Page") {
-		@header(page.Name, page.Description)
-		<main class="p-4 max-w-[min(720px,_94%)] mx-auto pt-28">
+		@header(page.Name)
+		<main class="p-4 max-w-[min(720px,_94%)] mx-auto pt-20">
 			for _, component := range page.Components {
 				<div class="mb-10">
 					<h2 class="text-lg font-thin">

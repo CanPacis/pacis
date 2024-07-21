@@ -1,21 +1,23 @@
 package main
 
 import (
+	"embed"
 	"net/http"
-	"os"
-	"path"
 
 	test "github.com/CanPacis/pacis/test/cases"
 	"github.com/CanPacis/pacis/test/views"
 	"github.com/CanPacis/pacis/ui"
 )
 
+//go:embed public
+var public embed.FS
+
 func main() {
 	mux := http.NewServeMux()
 
 	pages := test.Pages()
 	app := ui.NewApp(ui.AppOptions{
-		ResourcePrefix: "static",
+		ResourcePrefix: "public",
 	})
 
 	mux.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
@@ -23,9 +25,9 @@ func main() {
 		views.Home(pages).Render(app.Context(r.Context()), w)
 	})
 
-	wd, _ := os.Getwd()
-	mux.Handle("GET /public/", http.StripPrefix("/public", http.FileServer(http.Dir(path.Join(wd, "test", "public")))))
-	mux.Handle("GET /static/", http.FileServerFS(app.ResourceProvider.FS()))
+	mux.Handle("GET /public/",
+		http.StripPrefix("/public/", http.FileServerFS(app.ResourceProvider.FS(ui.MustSubFS(public, "public")))),
+	)
 
 	for _, page := range pages {
 		mux.HandleFunc("GET "+page.Path(), func(w http.ResponseWriter, r *http.Request) {
