@@ -240,6 +240,11 @@ func (c *ButtonComponent) Value(value string) *ButtonComponent {
 	return c
 }
 
+func (c *ButtonComponent) Name(name string) *ButtonComponent {
+	c.setAttr("name", name)
+	return c
+}
+
 func (c *ButtonComponent) Disabled(disabled bool) *ButtonComponent {
 	if disabled {
 		return c.Variant(FormDisabled)
