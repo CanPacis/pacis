@@ -7,7 +7,7 @@ import (
 )
 
 func getNextScheme(ctx context.Context) string {
-	scheme := ui.GetTheme(ctx).ColorScheme
+	scheme := ui.GetApp(ctx).Theme.ColorScheme
 
 	if scheme == ui.Dark {
 		return ui.Light.String()
