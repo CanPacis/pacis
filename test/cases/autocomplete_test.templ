@@ -1,0 +1,33 @@
+package test
+
+import "github.com/CanPacis/pacis/ui"
+
+type User struct {
+	ID   string
+	Name string
+}
+
+func (u User) GetLabel() string {
+	return u.Name
+}
+
+func (u User) GetID() string {
+	return u.ID
+}
+
+var users = []ui.Option{
+	User{ID: "user-0", Name: "Muhammed Ali CAN"},
+	User{ID: "user-1", Name: "John Doe"},
+	User{ID: "user-2", Name: "Jane Doe"},
+}
+
+templ autocompleteTest() {
+	@ui.Autocomplete(users).Variant(ui.SizeLarge)
+}
+
+func init() {
+	page := NewTestPage(UITestPage, "Autocomplete", "", "autocomplete")
+	page.Define("Autocomplete Test", autocompleteTest())
+
+	RegisterPage(page)
+}
