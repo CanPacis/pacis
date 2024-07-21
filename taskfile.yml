@@ -3,10 +3,10 @@ version: '3'
 tasks:
   build-tailwind:
     cmds:
-      - npx tailwindcss -i ./public/input.css -o ./public/output.css --minify
+      - npx tailwindcss -i ./ui/input.css -o ./ui/static/output.css --minify
   dev-tailwind:
     cmds:
-      - npx tailwindcss -i ./ui/static/input.css -o ./ui/static/output.css
+      - npx tailwindcss -i ./ui/input.css -o ./ui/static/output.css
   generate-templ:
     cmds:
       - templ generate
