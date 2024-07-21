@@ -84,7 +84,7 @@ func avatar(c *AvatarComponent) templ.Component {
 			*sw(
 				c.variance().Size,
 				[]Variant{SizeHuge, SizeLarge, SizeMedium, SizeSmall, SizeTiny},
-				"size-20 text-2xl", "size-14 text-xl", "size-12 text-sm", "size-8 text-sm", "size-6 text-xs",
+				"size-16 text-2xl", "size-12 text-xl", "size-10 text-sm", "size-8 text-sm", "size-6 text-xs",
 			),
 		)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var4...)
