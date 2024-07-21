@@ -51,9 +51,9 @@ func menuSizeTest() templ.Component {
 			return templ_7745c5c3_Err
 		})
 		templ_7745c5c3_Err = ui.Menu(
-			ui.Action("Menu Item 1").StartIcon("home"),
-			ui.Action("Menu Item 2").Action("alert('Hi')"),
-			ui.Action("Menu Item 3").StartIcon("logout").Link("/"),
+			ui.IconOpt(ui.ActionOpt("Menu Item 1")).StartIcon("home"),
+			ui.ActionOpt("Menu Item 2").Action("alert('Hi')"),
+			ui.IconOpt(ui.LinkOpt("Menu Item 3").Link("/")).StartIcon("logout"),
 		).Variant(ui.SizeHuge).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -77,9 +77,9 @@ func menuSizeTest() templ.Component {
 			return templ_7745c5c3_Err
 		})
 		templ_7745c5c3_Err = ui.Menu(
-			ui.Action("Menu Item 1").StartIcon("home"),
-			ui.Action("Menu Item 2"),
-			ui.Action("Menu Item 3").StartIcon("logout").Link("/"),
+			ui.IconOpt(ui.ActionOpt("Menu Item 1")).StartIcon("home"),
+			ui.ActionOpt("Menu Item 2").Action("alert('Hi')"),
+			ui.IconOpt(ui.LinkOpt("Menu Item 3").Link("/")).StartIcon("logout"),
 		).Variant(ui.SizeLarge).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -103,9 +103,9 @@ func menuSizeTest() templ.Component {
 			return templ_7745c5c3_Err
 		})
 		templ_7745c5c3_Err = ui.Menu(
-			ui.Action("Menu Item 1").StartIcon("home"),
-			ui.Action("Menu Item 2"),
-			ui.Action("Menu Item 3").StartIcon("logout").Link("/"),
+			ui.IconOpt(ui.ActionOpt("Menu Item 1")).StartIcon("home"),
+			ui.ActionOpt("Menu Item 2").Action("alert('Hi')"),
+			ui.IconOpt(ui.LinkOpt("Menu Item 3").Link("/")).StartIcon("logout"),
 		).Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -129,9 +129,9 @@ func menuSizeTest() templ.Component {
 			return templ_7745c5c3_Err
 		})
 		templ_7745c5c3_Err = ui.Menu(
-			ui.Action("Menu Item 1").StartIcon("home"),
-			ui.Action("Menu Item 2"),
-			ui.Action("Menu Item 3").StartIcon("logout").Link("/"),
+			ui.IconOpt(ui.ActionOpt("Menu Item 1")).StartIcon("home"),
+			ui.ActionOpt("Menu Item 2").Action("alert('Hi')"),
+			ui.IconOpt(ui.LinkOpt("Menu Item 3").Link("/")).StartIcon("logout"),
 		).Variant(ui.SizeSmall).Render(templ.WithChildren(ctx, templ_7745c5c3_Var5), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -155,9 +155,9 @@ func menuSizeTest() templ.Component {
 			return templ_7745c5c3_Err
 		})
 		templ_7745c5c3_Err = ui.Menu(
-			ui.Action("Menu Item 1").StartIcon("home"),
-			ui.Action("Menu Item 2"),
-			ui.Action("Menu Item 3").StartIcon("logout").Link("/"),
+			ui.IconOpt(ui.ActionOpt("Menu Item 1")).StartIcon("home"),
+			ui.ActionOpt("Menu Item 2").Action("alert('Hi')"),
+			ui.IconOpt(ui.LinkOpt("Menu Item 3").Link("/")).StartIcon("logout"),
 		).Variant(ui.SizeTiny).Render(templ.WithChildren(ctx, templ_7745c5c3_Var6), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
