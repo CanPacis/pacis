@@ -13,5 +13,6 @@ tasks:
   dev:
     cmds:
       - task dev-tailwind
-      - cd test && task generate-templ
+      - task generate-templ
       - go build -o ./test/tmp/main ./test/main.go
+      - go build -o ./docs/tmp/main ./docs/main.go

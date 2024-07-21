@@ -4,7 +4,7 @@ tmp_dir = "tmp"
 
 [build]
   args_bin = []
-  bin = "./test/tmp/main"
+  bin = "./test/tmp/main & ./docs/tmp/main"
   cmd = "task dev"
   delay = 1000
   exclude_dir = ["assets", "tmp", "vendor", "public", "testdata", "icons/icons"]
