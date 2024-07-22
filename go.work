@@ -4,6 +4,7 @@ use (
 	./docs
 	./echo
 	./icons
+	./std
 	./test
 	./ui
 )
