@@ -205,10 +205,10 @@ document.addEventListener("alpine:init", () => {
   );
 
   Alpine.directive("snippet", (el, { expression }, { evaluate }) => {
-    const value = evaluate(expression);
+    const values = evaluate(expression);
 
     el.addEventListener("click", () => {
-      navigator.clipboard.writeText(value);
+      navigator.clipboard.writeText(values.join("\n"));
       evaluate("done = true");
       setTimeout(() => {
         evaluate("done = false");

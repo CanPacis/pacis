@@ -157,6 +157,16 @@ func (s str) String() string {
 	return "'" + string(s) + "'"
 }
 
+func toStrList(list []string) []string {
+	result := []string{}
+
+	for _, entry := range list {
+		result = append(result, str(entry).String())
+	}
+
+	return result
+}
+
 type textRenderer struct {
 	data string
 }

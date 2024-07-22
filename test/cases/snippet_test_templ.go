@@ -32,11 +32,11 @@ func sinppetTest() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = ui.Snippet("Copy this text to the clipboard").Prefix("$").Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = ui.Snippet("go get github.com/CanPacis/pacis/ui", "go get github.com/CanPacis/pacis/ui").Prefix("$").Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = ui.Snippet("Copy this text to the clipboard").Prefix("$").Variant(ui.ColorSecondary).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = ui.Snippet("go get github.com/CanPacis/pacis/ui").Prefix("$").Variant(ui.ColorSecondary).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

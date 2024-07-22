@@ -1,5 +1,8 @@
 package ui
 
+import "strings"
+import "fmt"
+
 templ snippet(c *SnippetComponent) {
 	<div
 		x-data="{ done: false }"
@@ -26,7 +29,7 @@ templ snippet(c *SnippetComponent) {
 				</div>
 			}
 		</div>
-		<button type="button" role="button" x-snippet={ str(c.data[0]).String() } class="rounded focus-visible:focus-ring focusable active:scale-[0.96] transition duration-100">
+		<button type="button" role="button" x-snippet={ fmt.Sprintf("[%s]", strings.Join(toStrList(c.data), ", ")) } class="rounded focus-visible:focus-ring focusable active:scale-[0.96] transition duration-100">
 			@Icon("clipboard").Size(20).Attr("x-show", "!done")
 			@Icon("check").Size(20).Attr("x-show", "done")
 		</button>

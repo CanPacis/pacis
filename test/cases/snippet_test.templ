@@ -4,8 +4,8 @@ import "github.com/CanPacis/pacis/ui"
 
 templ sinppetTest() {
   <div class="flex gap-2">
-    @ui.Snippet("Copy this text to the clipboard").Prefix("$")
-    @ui.Snippet("Copy this text to the clipboard").Prefix("$").Variant(ui.ColorSecondary)
+    @ui.Snippet("go get github.com/CanPacis/pacis/ui", "go get github.com/CanPacis/pacis/ui").Prefix("$")
+    @ui.Snippet("go get github.com/CanPacis/pacis/ui").Prefix("$").Variant(ui.ColorSecondary)
   </div>
 }
 
