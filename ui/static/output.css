@@ -1201,6 +1201,10 @@ video {
   background-color: var(--pacis-gray-700);
 }
 
+.bg-p-gray-alpha-100 {
+  background-color: var(--pacis-gray-alpha-100);
+}
+
 .bg-p-gray-alpha-400 {
   background-color: var(--pacis-gray-alpha-400);
 }

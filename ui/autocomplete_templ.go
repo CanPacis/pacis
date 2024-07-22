@@ -32,14 +32,14 @@ func autocomplete(c *AutocompleteComponent) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div x-data=\"{ open: false, value: &#39;&#39; }\" x-autocomplete=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div x-data=\"{ value: &#39;&#39;, result: null, active: null }\" x-autocomplete=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("'%s'", c.ID()))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/autocomplete.templ`, Line: 7, Col: 86}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/autocomplete.templ`, Line: 7, Col: 101}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -49,11 +49,11 @@ func autocomplete(c *AutocompleteComponent) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Input().Type(InputTypeSearch).Placeholder("Search...").FullWidth().Attr("x-model:value", "value", "input").Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Input().Type(InputTypeSearch).Placeholder("Search...").FullWidth().Attr("x-model.debounce", "value", "input").Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"relative w-full\" x-show=\"open\" x-menu data-close-menu=\"open = false\" data-is-menu-open=\"open\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"relative w-full\" x-show=\"result !== null\" x-click-outside=\"result = null\" data-click-outside-if=\"result !== null\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -116,7 +116,7 @@ func autocomplete(c *AutocompleteComponent) templ.Component {
 				var templ_7745c5c3_Var6 string
 				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(item.GetLabel())
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/autocomplete.templ`, Line: 34, Col: 23}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/autocomplete.templ`, Line: 33, Col: 23}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {
@@ -124,12 +124,12 @@ func autocomplete(c *AutocompleteComponent) templ.Component {
 				}
 				return templ_7745c5c3_Err
 			})
-			templ_7745c5c3_Err = MenuItem().FullWidth().Attr("data-id", item.GetID()).Attr("x-on:click", fmt.Sprintf("value = '%s'; open = false", item.GetLabel())).Render(templ.WithChildren(ctx, templ_7745c5c3_Var5), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = MenuItem().FullWidth().Attr("data-id", item.GetID()).Attr("x-on:click", fmt.Sprintf("value = '%s'; await $nextTick(); result = null", item.GetLabel())).Attr("x-show", fmt.Sprintf("result !== null && result.includes('%s')", item.GetID())).Attr(":class", fmt.Sprintf("active === '%s' ? 'bg-p-gray-alpha-100' : ''", item.GetID())).Render(templ.WithChildren(ctx, templ_7745c5c3_Var5), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div x-show=\"result !== null &amp;&amp; result.length === 0\" class=\"flex justify-center py-2 text-sm text-center text-p-gray-900\">No results found</div></div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

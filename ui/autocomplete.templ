@@ -4,16 +4,15 @@ import "fmt"
 
 templ autocomplete(c *AutocompleteComponent) {
 	@templ.JSONScript(c.ID(), toSerializedOptions(c.items))
-	<div x-data="{ open: false, value: '' }" x-autocomplete={ fmt.Sprintf("'%s'", c.ID()) }>
+	<div x-data="{ value: '', result: null, active: null }" x-autocomplete={ fmt.Sprintf("'%s'", c.ID()) }>
 		<div class="w-full" x-ref="anchor">
-			@Input().Type(InputTypeSearch).Placeholder("Search...").FullWidth().Attr("x-model:value", "value", "input")
+			@Input().Type(InputTypeSearch).Placeholder("Search...").FullWidth().Attr("x-model.debounce", "value", "input")
 		</div>
 		<div
 			class="relative w-full"
-			x-show="open"
-			x-menu
-			data-close-menu="open = false"
-			data-is-menu-open="open"
+			x-show="result !== null"
+			x-click-outside="result = null"
+			data-click-outside-if="result !== null"
 		>
 			<div
 				class={ class(c.classList, "border w-full bg-p-background-100 border-p-gray-400 rounded-xl flex flex-col gap-1 z-[99999]",
@@ -30,10 +29,13 @@ templ autocomplete(c *AutocompleteComponent) {
 				{ c.getAttrs("base")... }
 			>
 				for _, item := range c.items {
-					@MenuItem().FullWidth().Attr("data-id", item.GetID()).Attr("x-on:click", fmt.Sprintf("value = '%s'; open = false", item.GetLabel())) {
+					@MenuItem().FullWidth().Attr("data-id", item.GetID()).Attr("x-on:click", fmt.Sprintf("value = '%s'; await $nextTick(); result = null", item.GetLabel())).Attr("x-show", fmt.Sprintf("result !== null && result.includes('%s')", item.GetID())).Attr(":class", fmt.Sprintf("active === '%s' ? 'bg-p-gray-alpha-100' : ''", item.GetID())) {
 						{ item.GetLabel() }
 					}
 				}
+				<div x-show="result !== null && result.length === 0" class="flex justify-center py-2 text-sm text-center text-p-gray-900">
+					No results found
+				</div>
 			</div>
 		</div>
 	</div>
