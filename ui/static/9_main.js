@@ -172,6 +172,7 @@ document.addEventListener("alpine:init", () => {
       const update = (value) => {
         if (value.trim().length === 0) {
           evaluate("result = null");
+          evaluate("active = null");
           return;
         }
 
@@ -203,24 +204,30 @@ document.addEventListener("alpine:init", () => {
               return items[0].getAttribute("data-id");
             }
 
-            const idx = items.findIndex((e) => e.getAttribute("data-id") === currentActive);
+            const idx = items.findIndex(
+              (e) => e.getAttribute("data-id") === currentActive
+            );
             if (idx === -1) {
               return items[0].getAttribute("data-id");
             }
             return items[(idx + 1) % items.length].getAttribute("data-id");
-          }
+          };
 
           const prev = () => {
             if (!currentActive) {
               return items.at(-1).getAttribute("data-id");
             }
 
-            const idx = items.findIndex((e) => e.getAttribute("data-id") === currentActive);
+            const idx = items.findIndex(
+              (e) => e.getAttribute("data-id") === currentActive
+            );
             if (idx === -1) {
               return items.at(-1).getAttribute("data-id");
             }
-            return items[(idx - 1) < 0 ? items.length - 1 : idx - 1].getAttribute("data-id");
-          }
+            return items[idx - 1 < 0 ? items.length - 1 : idx - 1].getAttribute(
+              "data-id"
+            );
+          };
 
           switch (e.key) {
             case "ArrowDown":
@@ -234,6 +241,12 @@ document.addEventListener("alpine:init", () => {
             case "Enter":
               e.preventDefault();
               el.querySelector(`[data-id="${currentActive}"]`).click();
+              evaluate(`active = null`);
+              break;
+            case "Escape":
+              e.preventDefault();
+              evaluate(`active = null`);
+              evaluate(`result = null`);
               break;
           }
         });
