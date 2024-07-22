@@ -89,11 +89,11 @@ document.addEventListener("alpine:init", () => {
       }
 
       let currentFocusIndex = 0;
-      const getNext = () => {
+      const next = () => {
         currentFocusIndex = (currentFocusIndex + 1) % items.length;
         return items[currentFocusIndex];
       };
-      const getPrev = () => {
+      const prev = () => {
         currentFocusIndex =
           currentFocusIndex - 1 < 0 ? items.length - 1 : currentFocusIndex - 1;
         return items[currentFocusIndex];
@@ -108,9 +108,9 @@ document.addEventListener("alpine:init", () => {
           e.preventDefault();
 
           if (e.shiftKey) {
-            getPrev().focus();
+            prev().focus();
           } else {
-            getNext().focus();
+            next().focus();
           }
         } else if (e.key === "Escape") {
           evaluate(closeMenu);
@@ -124,11 +124,11 @@ document.addEventListener("alpine:init", () => {
           switch (e.key) {
             case "ArrowDown":
               e.preventDefault();
-              getNext().focus();
+              next().focus();
               break;
             case "ArrowUp":
               e.preventDefault();
-              getPrev().focus();
+              prev().focus();
           }
         });
       }
@@ -165,40 +165,101 @@ document.addEventListener("alpine:init", () => {
       const id = evaluate(expression);
       const input = el.querySelector("input[type='search']");
       const data = JSON.parse(document.getElementById(id).textContent);
-
-      input.addEventListener("input", (e) => {});
-
+      const haystack = data.map((d) => d.label);
       const valueGetter = evaluateLater("value");
+      const resultGetter = evaluateLater("result");
+
+      const update = (value) => {
+        if (value.trim().length === 0) {
+          evaluate("result = null");
+          evaluate("active = null");
+          return;
+        }
+
+        const idx = fuzzy.filter(haystack, value) ?? [];
+        const ids = idx.map((i) => data[i].id);
+        evaluate("result = " + JSON.stringify(ids));
+      };
 
       effect(() => {
         valueGetter((value) => {
-          if (value.trim().length === 0) {
-            evaluate("open = false");
+          update(value);
+        });
+      });
+
+      // input.addEventListener("focus", (e) => {
+      //   update(e.target.value);
+      // });
+
+      const inputHandler = (e) => {
+        resultGetter((result) => {
+          const items = Array.from(el.querySelectorAll(`[data-id]`)).filter(
+            (e) => result.includes(e.getAttribute("data-id"))
+          );
+
+          const currentActive = evaluate("active");
+
+          const next = () => {
+            if (!currentActive) {
+              return items[0].getAttribute("data-id");
+            }
+
+            const idx = items.findIndex(
+              (e) => e.getAttribute("data-id") === currentActive
+            );
+            if (idx === -1) {
+              return items[0].getAttribute("data-id");
+            }
+            return items[(idx + 1) % items.length].getAttribute("data-id");
+          };
+
+          const prev = () => {
+            if (!currentActive) {
+              return items.at(-1).getAttribute("data-id");
+            }
+
+            const idx = items.findIndex(
+              (e) => e.getAttribute("data-id") === currentActive
+            );
+            if (idx === -1) {
+              return items.at(-1).getAttribute("data-id");
+            }
+            return items[idx - 1 < 0 ? items.length - 1 : idx - 1].getAttribute(
+              "data-id"
+            );
+          };
+
+          switch (e.key) {
+            case "ArrowDown":
+              e.preventDefault();
+              evaluate(`active = '${next()}'`);
+              break;
+            case "ArrowUp":
+              e.preventDefault();
+              evaluate(`active = '${prev()}'`);
+              break;
+            case "Enter":
+              e.preventDefault();
+              el.querySelector(`[data-id="${currentActive}"]`).click();
+              evaluate(`active = null`);
+              break;
+            case "Escape":
+              e.preventDefault();
+              evaluate(`active = null`);
+              evaluate(`result = null`);
+              break;
+          }
+        });
+      };
+
+      effect(() => {
+        resultGetter((result) => {
+          if (!result) {
+            el.removeEventListener("keydown", inputHandler);
             return;
           }
 
-          const found = fuzzy
-            .filter(
-              data.map((d) => d.label),
-              value
-            )
-            .map((d) => data[d]);
-
-          const options = el.querySelectorAll(`[data-id]`);
-
-          if (found.length > 0) {
-            for (const option of options) {
-              if (found.some((f) => f.id === option.getAttribute("data-id"))) {
-                option.setAttribute("x-show", "true");
-                option.setAttribute("aria-hidden", "true");
-              } else {
-                option.setAttribute("x-show", "false");
-                option.removeAttribute("aria-hidden");
-              }
-            }
-
-            evaluate("open = true");
-          }
+          el.addEventListener("keydown", inputHandler);
         });
       });
     }
