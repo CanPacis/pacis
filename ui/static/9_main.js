@@ -204,6 +204,24 @@ document.addEventListener("alpine:init", () => {
     }
   );
 
+  Alpine.directive("snippet", (el, { expression }, { evaluate }) => {
+    const value = evaluate(expression);
+
+    el.addEventListener("click", () => {
+      navigator.clipboard.writeText(value);
+      evaluate("done = true");
+      setTimeout(() => {
+        evaluate("done = false");
+      }, 1000);
+    });
+  });
+
+  Alpine.magic("copy", () => {
+    return (data) => {
+      navigator.clipboard.writeText(data);
+    };
+  });
+
   Alpine.store("tabs", {
     init() {
       Alpine.effect(() => {

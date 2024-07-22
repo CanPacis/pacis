@@ -1,0 +1,17 @@
+package test
+
+import "github.com/CanPacis/pacis/ui"
+
+templ sinppetTest() {
+  <div class="flex gap-2">
+    @ui.Snippet("Copy this text to the clipboard").Prefix("$")
+    @ui.Snippet("Copy this text to the clipboard").Prefix("$").Variant(ui.ColorSecondary)
+  </div>
+}
+
+func init() {
+  page := NewTestPage(UITestPage, "Snippet", "", "snippet")
+  page.Define("Snippet Test", sinppetTest())
+
+  RegisterPage(page)
+}

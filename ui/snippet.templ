@@ -1,0 +1,54 @@
+package ui
+
+templ snippet(c *SnippetComponent) {
+	<div
+		x-data="{ done: false }"
+		class={ class(c.classList, "flex items-center justify-between w-full gap-4 py-2 pl-3 pr-2 border rounded-md border-p-gray-alpha-400",
+    sw(
+      c.variance().Color, 
+      []Variant{ColorPrimary, ColorSecondary},
+      "bg-p-background-100 text-p-gray-1000",
+      "bg-p-gray-1000 text-p-gray-100",
+    ),
+  ) }
+	>
+		<div class="flex flex-col flex-1 gap-1 text-sm">
+			for _, entry := range c.data {
+				<div class="flex gap-2">
+					if has(c.prefix) {
+						<span>
+							{ c.prefix }
+						</span>
+					}
+					<span>
+						{ entry }
+					</span>
+				</div>
+			}
+		</div>
+		<button type="button" role="button" x-snippet={ str(c.data[0]).String() } class="rounded focus-visible:focus-ring focusable active:scale-[0.96] transition duration-100">
+			@Icon("clipboard").Size(20).Attr("x-show", "!done")
+			@Icon("check").Size(20).Attr("x-show", "done")
+		</button>
+	</div>
+}
+
+type SnippetComponent struct {
+	VariantComponent[*SnippetComponent]
+	data   []string
+	prefix string
+}
+
+func (c *SnippetComponent) Prefix(v string) *SnippetComponent {
+	c.prefix = v
+	return c
+}
+
+func Snippet(data ...string) *SnippetComponent {
+	c := &SnippetComponent{
+		data: data,
+	}
+	c.Component = NewComponent(c, snippet)
+
+	return c
+}
